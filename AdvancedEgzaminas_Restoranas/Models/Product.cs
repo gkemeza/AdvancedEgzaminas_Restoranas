@@ -1,8 +1,9 @@
 ﻿namespace AdvancedEgzaminas_Restoranas.Models
 {
-    public class Product
+    public abstract class Product
     {
         public string Name { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
+        public abstract string Type { get; }
     }
 }

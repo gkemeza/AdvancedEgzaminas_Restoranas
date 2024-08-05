@@ -1,4 +1,4 @@
-﻿namespace AdvancedEgzaminas_Restoranas
+﻿namespace AdvancedEgzaminas_Restoranas.UI
 {
     public class UserInterface
     {

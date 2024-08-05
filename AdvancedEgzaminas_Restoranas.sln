@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedEgzaminas_Restoranas", "AdvancedEgzaminas_Restoranas\AdvancedEgzaminas_Restoranas.csproj", "{A6A5A723-10E7-46B6-AEBC-6B8E04E75A31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvancedEgzaminas_Restoranas", "AdvancedEgzaminas_Restoranas\AdvancedEgzaminas_Restoranas.csproj", "{A6A5A723-10E7-46B6-AEBC-6B8E04E75A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoranasTests", "RestoranasTests\RestoranasTests.csproj", "{1A47C5D3-8F69-453A-9F57-388B5B74F824}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A6A5A723-10E7-46B6-AEBC-6B8E04E75A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6A5A723-10E7-46B6-AEBC-6B8E04E75A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6A5A723-10E7-46B6-AEBC-6B8E04E75A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A47C5D3-8F69-453A-9F57-388B5B74F824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A47C5D3-8F69-453A-9F57-388B5B74F824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A47C5D3-8F69-453A-9F57-388B5B74F824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A47C5D3-8F69-453A-9F57-388B5B74F824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

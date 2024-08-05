@@ -4,6 +4,6 @@
     {
         public int Number { get; set; }
         public int Seats { get; set; }
-        public bool IsTaken { get; set; } // 1.3?
+        public bool IsOccupied { get; set; }
     }
 }
