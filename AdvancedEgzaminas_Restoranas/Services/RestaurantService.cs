@@ -75,11 +75,12 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     // AddProduct();
                     {
                         // DisplayProductsMenu();
+                        // or
+                        // EnterProductName();
                     }
                     // Service();
                 }
             }
-            //chooseProducts
             throw new NotImplementedException();
         }
 
