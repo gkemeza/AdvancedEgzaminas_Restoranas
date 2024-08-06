@@ -1,5 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.Services;
+using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas
 {
@@ -10,7 +11,8 @@ namespace AdvancedEgzaminas_Restoranas
         static void Main(string[] args)
         {
             IDataAccess dataAccess = new DataAccess();
-            Restaurant restaurant = new Restaurant(dataAccess, @"..\..\..\Data\drinks.csv");
+            UserInterface userInterface = new UserInterface();
+            IRestaurantService restaurant = new RestaurantService(dataAccess, userInterface, @"..\..\..\Data\drinks.csv");
 
             restaurant.Run();
         }
