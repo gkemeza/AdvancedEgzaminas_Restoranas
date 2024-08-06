@@ -5,6 +5,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
 {
     public class TableService : ITableService
     {
+        private List<Table> _tables;
+        private readonly IDataAccess _dataAccess;
+        private readonly string _filePath;
+
         public bool AreFreeTables()
         {
             throw new NotImplementedException();
