@@ -1,5 +1,4 @@
-﻿using AdvancedEgzaminas_Restoranas.Models;
-using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services
@@ -9,18 +8,24 @@ namespace AdvancedEgzaminas_Restoranas.Services
     {
         private readonly IDataAccess _dataAccess;
         private readonly UserInterface _userInterface;
-        private readonly string _filePath;
+        private readonly ITableService _tableService;
+        private readonly IProductService _productService;
 
-        public RestaurantService(IDataAccess dataAccess, UserInterface userInterface, string filePath)
+        public RestaurantService(IDataAccess dataAccess, UserInterface userInterface,
+            ITableService tableService, IProductService productService)
         {
             _dataAccess = dataAccess;
             _userInterface = userInterface;
-            _filePath = filePath;
+            _tableService = tableService;
+            _productService = productService;
         }
 
         public void Run()
         {
-            SaveTestDrinks();
+            _productService.SeedDrinks();
+            _productService.SeedMeals();
+            _tableService.SeedTables();
+
             while (true)
             {
                 _userInterface.DisplayMainMenu();
@@ -31,10 +36,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void CallChosenOptionMethod()
         {
-            Console.Clear();
+            Console.WriteLine();
             string option = Console.ReadLine();
-
-            //validation
+            // TODO: validate input
 
             switch (option)
             {
@@ -55,13 +59,26 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     Console.WriteLine("Invalid choice!");
                     break;
             }
+
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
 
         private void BeginTable()
         {
-            //showTables
-            //chooseTable
-            //showMenu
+            int number = _tableService.ChooseTable();
+            _tableService.OccupyTable(number);
+            while (true)
+            {
+                // HandleOrderMenu();
+                {
+                    // AddProduct();
+                    {
+                        // DisplayProductsMenu();
+                    }
+                    // Service();
+                }
+            }
             //chooseProducts
             throw new NotImplementedException();
         }
@@ -76,17 +93,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             throw new NotImplementedException();
         }
 
-        private void SaveTestDrinks()
-        {
-            var drinks = new List<Product>()
-            {
-                new Drink ("Cappucino", 2.5m),
-                new Drink ("Mojito", 9),
-                new Drink ("Aperol Spritz", 12),
-            };
-
-            _dataAccess.WriteCsv(_filePath, drinks);
-        }
 
     }
 }
