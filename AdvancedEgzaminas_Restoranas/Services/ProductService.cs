@@ -3,7 +3,6 @@ using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
-    //nereikia?
     public class ProductService : IProductService
     {
         private List<Product> _products;

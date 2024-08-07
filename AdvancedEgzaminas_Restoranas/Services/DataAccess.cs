@@ -1,6 +1,5 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using CsvHelper;
-using CsvHelper.Configuration;
 using System.Globalization;
 
 namespace AdvancedEgzaminas_Restoranas.Services
@@ -14,7 +13,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 return new List<T>();
             }
 
-            // Fix error
             using (var reader = new StreamReader(filePath))
 
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))

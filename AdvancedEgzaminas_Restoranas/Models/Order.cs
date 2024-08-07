@@ -8,6 +8,11 @@
         public decimal TotalAmount { get; set; }
         public DateTime OrderTime { get; set; }
 
+        public Order()
+        {
+
+        }
+
         public Order(Table table, List<Product> products, decimal totalAmount, DateTime orderTime)
         {
             ID = Guid.NewGuid();

@@ -17,7 +17,7 @@ namespace AdvancedEgzaminas_Restoranas
             ITableService tableService = new TableService(
                 dataAccess, @"..\..\..\Data\tables.csv");
             IOrderService orderService = new OrderService(
-                dataAccess, tableService, productService, userInterface, @"..\..\..\Data\orders.csv");
+                dataAccess, tableService, productService, userInterface, @"..\..\..\Data\orders.json");
             IRestaurantService restaurant = new RestaurantService(
                 dataAccess, userInterface, tableService, productService, orderService);
 

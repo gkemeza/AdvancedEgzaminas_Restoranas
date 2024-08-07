@@ -1,6 +1,7 @@
 ﻿using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
+using System.Text.Json;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -12,6 +13,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private readonly ITableService _tableService;
         private readonly IProductService _productService;
         private readonly UserInterface _userInterface;
+        private readonly string _ordersFilePath;
 
         public OrderService(IDataAccess dataAccess, ITableService tableService, IProductService productService, UserInterface userInterface, string filePath)
         {
@@ -19,6 +21,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _tableService = tableService;
             _productService = productService;
             _userInterface = userInterface;
+            _ordersFilePath = filePath;
         }
 
         public Order CreateOrder(int tableNumber, List<Product> products)
@@ -28,7 +31,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             decimal totalPrice = 0;
             foreach (var product in products)
             {
-                totalPrice = product.Price;
+                totalPrice += product.Price;
             }
 
             return new Order(table, products, totalPrice, DateTime.Now);
@@ -37,18 +40,22 @@ namespace AdvancedEgzaminas_Restoranas.Services
         public void HandleOrderMenu(int tableNumber)
         {
             string option = string.Empty;
-            while (option != "q")
+            var products = new List<Product>();
+
+            while (option != "q" && option != "2")
             {
                 _userInterface.DisplayOrderMenu();
 
                 option = Console.ReadLine();
-                // TODO: validate input
 
-                var products = new List<Product>();
                 switch (option)
                 {
                     case "1":
-                        products.Add(_productService.AddProduct());
+                        var prod = _productService.AddProduct();
+                        if (prod != null)
+                        {
+                            products.Add(prod);
+                        }
                         Console.WriteLine("\nPress any key to continue...");
                         Console.ReadKey();
                         break;
@@ -68,7 +75,48 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public void Service(int tableNumber, List<Product> products)
         {
-            CreateOrder(tableNumber, products);
+            Order order = CreateOrder(tableNumber, products);
+            UpdateOrders(order);
+        }
+
+        private void UpdateOrders(Order order)
+        {
+            List<Order> orders = ReadJson<Order>();
+            orders.Add(order);
+            WriteOrdersJson(orders);
+        }
+
+        // fix error (cant deserialize abstract Product class)
+        private List<T> ReadJson<T>()
+        {
+            var orders = new List<T>();
+            try
+            {
+                if (File.Exists(_ordersFilePath))
+                {
+                    string[] lines = File.ReadAllLines(_ordersFilePath);
+                    foreach (string line in lines)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            T order = JsonSerializer.Deserialize<T>(line);
+                            orders.Add(order);
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine($"Error: {e}");
+            }
+
+            return orders;
+        }
+
+        private void WriteOrdersJson(List<Order> orders)
+        {
+            var lines = orders.Select(order => JsonSerializer.Serialize(order));
+            File.WriteAllLines(_ordersFilePath, lines);
         }
     }
 }
