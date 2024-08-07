@@ -6,7 +6,7 @@
         public decimal Price { get; set; }
         public abstract string Type { get; }
 
-        public Product() { }
+        //public Product() { }
 
         //protected Product(string name, decimal price)
         //{

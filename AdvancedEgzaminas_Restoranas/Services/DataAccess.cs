@@ -14,21 +14,15 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 return new List<T>();
             }
 
-            var conf = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                Delimiter = ",",
-                HasHeaderRecord = true,
-                TrimOptions = TrimOptions.Trim,
-                MissingFieldFound = null
-            };
-
+            // Fix error
             using (var reader = new StreamReader(filePath))
 
-            using (var csv = new CsvReader(reader, conf))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 try
                 {
-                    return csv.GetRecords<T>().ToList();
+                    var temp = csv.GetRecords<T>();
+                    return temp.ToList();
                 }
                 catch (ReaderException ex)
                 {

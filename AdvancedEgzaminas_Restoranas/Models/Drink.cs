@@ -11,7 +11,5 @@
         }
 
         public Drink() { }
-
-
     }
 }

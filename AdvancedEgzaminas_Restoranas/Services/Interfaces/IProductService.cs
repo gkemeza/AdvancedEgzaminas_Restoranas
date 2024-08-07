@@ -4,10 +4,10 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
 {
     public interface IProductService
     {
-        List<Product> GetProducts(string filename);
+        List<Product> GetProducts(string drinksFilePath, string foodFilePath);
         void AddProduct();
         void SeedDrinks();
-        void SeedMeals();
+        void SeedFood();
         // Product GetProduct(string name)
         // Product GetFood(string name) ?
         // Product GetDrink(string name) ?

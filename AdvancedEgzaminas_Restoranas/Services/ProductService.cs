@@ -18,34 +18,47 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _foodFilePath = foodFilePath;
         }
 
-        public List<Product> GetProducts(string filePath)
+        public List<Product> GetProducts(string drinksFilePath, string foodFilePath)
         {
-            return _dataAccess.ReadCsv<Product>(filePath);
+            _products = GetDrinks(drinksFilePath);
+            _products.AddRange(GetFood(foodFilePath));
+            return _products;
+        }
+
+        private List<Product> GetDrinks(string filePath)
+        {
+            return _dataAccess.ReadCsv<Drink>(filePath).Cast<Product>().ToList();
+        }
+
+        private List<Product> GetFood(string filePath)
+        {
+            return _dataAccess.ReadCsv<Food>(filePath).Cast<Product>().ToList();
         }
 
         public void AddProduct()
         {
             DisplayProductsMenu();
-            // ChooseProduct();
+            ChooseProduct();
         }
 
 
         private void DisplayProductsMenu()
         {
-            var drinks = GetProducts(_drinksFilePath);
+            var menuItems = GetProducts(_drinksFilePath, _foodFilePath);
 
-            if (drinks.Count == 0)
+            if (menuItems.Count == 0)
             {
                 Console.WriteLine("No food items found.");
                 return;
             }
 
+            Console.Clear();
             Console.WriteLine("***** Menu *****");
             Console.WriteLine("ID | Name | Price");
             Console.WriteLine("-----------------");
 
             int i = 1;
-            foreach (var item in drinks)
+            foreach (var item in menuItems)
             {
                 Console.WriteLine($"{i++} | {item.Name} | ${item.Price:F2}");
             }
@@ -55,7 +68,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             var drinks = new List<Product>()
             {
-                new Drink ("Cappucino", 2.5m),
+                new Drink ("Cappuccino", 2.5m),
                 new Drink ("Mojito", 9),
                 new Drink ("Aperol Spritz", 12),
             };
@@ -63,7 +76,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _dataAccess.WriteCsv(_drinksFilePath, drinks);
         }
 
-        public void SeedMeals()
+        public void SeedFood()
         {
             var food = new List<Product>()
             {
