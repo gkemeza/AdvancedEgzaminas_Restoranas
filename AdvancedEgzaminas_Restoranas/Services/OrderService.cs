@@ -86,7 +86,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             WriteOrdersJson(orders);
         }
 
-        private List<Order> ReadOrdersJson()
+        public List<Order> ReadOrdersJson()
         {
             var orders = new List<Order>();
             try
@@ -106,7 +106,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine($"Error: {e}");
+                Console.WriteLine($"File not found: {e}");
             }
             catch (JsonException e)
             {

@@ -71,7 +71,31 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void ShowOpenTables()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            var orders = _orderService.ReadOrdersJson();
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("No open tables found.");
+                return;
+            }
+            Console.WriteLine("***** Open Tables *****:\n");
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Order ID: {order.ID}");
+                Console.WriteLine($"Table Number: {order.Table.Number}");
+                Console.WriteLine($"Seats: {order.Table.Seats}");
+                Console.WriteLine($"Order Time: {order.OrderTime}");
+                Console.WriteLine("Products:");
+                foreach (var product in order.Products)
+                {
+                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price:C}");
+                }
+                Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
+                Console.WriteLine(new string('-', 40));
+            }
+
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
 
         private void ShowReceipts()
