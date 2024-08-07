@@ -35,14 +35,38 @@ namespace AdvancedEgzaminas_Restoranas.Services
             return _dataAccess.ReadCsv<Food>(filePath).Cast<Product>().ToList();
         }
 
-        public void AddProduct()
+        public Product AddProduct()
         {
-            DisplayProductsMenu();
-            ChooseProduct();
+            var allProducts = GetProducts(_drinksFilePath, _foodFilePath);
+            DisplayProductsMenu(allProducts);
+            return ChooseProduct(allProducts);
+        }
+
+        private Product ChooseProduct(List<Product> products)
+        {
+            string chosenName = PromptForProductName();
+
+            Product? product = null;
+            if (products.Any(p => string.Equals(p.Name, chosenName, StringComparison.OrdinalIgnoreCase)))
+            {
+                product = products.FirstOrDefault(p => string.Equals(p.Name, chosenName, StringComparison.OrdinalIgnoreCase));
+                Console.WriteLine($"{product.Name} was addded to the order");
+            }
+            else
+            {
+                Console.WriteLine("Wrong name!");
+            }
+            return product;
+        }
+
+        private string PromptForProductName()
+        {
+            Console.WriteLine("Enter product name:");
+            return Console.ReadLine();
         }
 
 
-        private void DisplayProductsMenu()
+        private void DisplayProductsMenu(List<Product> products)
         {
             var menuItems = GetProducts(_drinksFilePath, _foodFilePath);
 
