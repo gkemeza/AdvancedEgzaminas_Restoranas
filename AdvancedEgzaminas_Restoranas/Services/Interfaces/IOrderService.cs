@@ -5,5 +5,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
     public interface IOrderService
     {
         Order CreateOrder(int tableNumber, List<Product> products);
+        void HandleOrderMenu();
     }
 }

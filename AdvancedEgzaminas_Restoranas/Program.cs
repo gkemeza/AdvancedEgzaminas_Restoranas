@@ -12,9 +12,14 @@ namespace AdvancedEgzaminas_Restoranas
         {
             IDataAccess dataAccess = new DataAccess();
             UserInterface userInterface = new UserInterface();
-            IProductService productService = new ProductService(dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
-            ITableService tableService = new TableService(dataAccess, @"..\..\..\Data\tables.csv");
-            IRestaurantService restaurant = new RestaurantService(dataAccess, userInterface, tableService, productService);
+            IProductService productService = new ProductService(
+                dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
+            ITableService tableService = new TableService(
+                dataAccess, @"..\..\..\Data\tables.csv");
+            IOrderService orderService = new OrderService(
+                dataAccess, tableService, productService, userInterface, @"..\..\..\Data\orders.csv");
+            IRestaurantService restaurant = new RestaurantService(
+                dataAccess, userInterface, tableService, productService, orderService);
 
             restaurant.Run();
         }

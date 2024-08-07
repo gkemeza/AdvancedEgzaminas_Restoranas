@@ -1,5 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using CsvHelper;
+using CsvHelper.Configuration;
 using System.Globalization;
 
 namespace AdvancedEgzaminas_Restoranas.Services
@@ -13,11 +14,28 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 return new List<T>();
             }
 
+            var conf = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ",",
+                HasHeaderRecord = true,
+                TrimOptions = TrimOptions.Trim,
+                MissingFieldFound = null
+            };
+
             using (var reader = new StreamReader(filePath))
 
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            using (var csv = new CsvReader(reader, conf))
             {
-                return csv.GetRecords<T>().ToList();
+                try
+                {
+                    return csv.GetRecords<T>().ToList();
+                }
+                catch (ReaderException ex)
+                {
+                    Console.WriteLine($"Error reading CSV: {ex.Message}");
+                    Console.WriteLine($"Error occurred on row {ex.Context.Parser.Row}");
+                    throw;
+                }
             }
         }
 

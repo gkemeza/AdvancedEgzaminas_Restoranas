@@ -4,8 +4,14 @@
     {
         public override string Type => "Drink";
 
-        public Drink(string name, decimal price) : base(name, price)
+        public Drink(string name, decimal price)
         {
+            Name = name;
+            Price = price;
         }
+
+        public Drink() { }
+
+
     }
 }

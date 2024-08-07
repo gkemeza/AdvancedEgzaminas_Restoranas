@@ -10,14 +10,16 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private readonly UserInterface _userInterface;
         private readonly ITableService _tableService;
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
 
         public RestaurantService(IDataAccess dataAccess, UserInterface userInterface,
-            ITableService tableService, IProductService productService)
+            ITableService tableService, IProductService productService, IOrderService orderService)
         {
             _dataAccess = dataAccess;
             _userInterface = userInterface;
             _tableService = tableService;
             _productService = productService;
+            _orderService = orderService;
         }
 
         public void Run()
@@ -36,7 +38,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void CallChosenOptionMethod()
         {
-            Console.WriteLine();
             string option = Console.ReadLine();
             // TODO: validate input
 
@@ -70,7 +71,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _tableService.OccupyTable(number);
             while (true)
             {
-                // HandleOrderMenu();
+                _orderService.HandleOrderMenu();
                 {
                     // AddProduct();
                     {

@@ -9,19 +9,46 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private List<Product> _products;
         private readonly IDataAccess _dataAccess;
         private readonly string _drinksFilePath;
-        private readonly string _mealsFilePath;
+        private readonly string _foodFilePath;
 
-        public ProductService(IDataAccess dataAccess, string drinksFilePath, string mealsFilePath)
+        public ProductService(IDataAccess dataAccess, string drinksFilePath, string foodFilePath)
         {
             _dataAccess = dataAccess;
             _drinksFilePath = drinksFilePath;
-            _mealsFilePath = mealsFilePath;
-            //_products = _dataAccess.ReadCsv<Product>(_filePath);
+            _foodFilePath = foodFilePath;
         }
 
-        public List<Product> GetProducts(string filename)
+        public List<Product> GetProducts(string filePath)
         {
-            throw new NotImplementedException();
+            return _dataAccess.ReadCsv<Product>(filePath);
+        }
+
+        public void AddProduct()
+        {
+            DisplayProductsMenu();
+            // ChooseProduct();
+        }
+
+
+        private void DisplayProductsMenu()
+        {
+            var drinks = GetProducts(_drinksFilePath);
+
+            if (drinks.Count == 0)
+            {
+                Console.WriteLine("No food items found.");
+                return;
+            }
+
+            Console.WriteLine("***** Menu *****");
+            Console.WriteLine("ID | Name | Price");
+            Console.WriteLine("-----------------");
+
+            int i = 1;
+            foreach (var item in drinks)
+            {
+                Console.WriteLine($"{i++} | {item.Name} | ${item.Price:F2}");
+            }
         }
 
         public void SeedDrinks()
@@ -40,13 +67,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             var food = new List<Product>()
             {
-                new Meal("Saltibarsciai", 6),
-                new Meal("Balandeliai", 12),
-                new Meal("Kepta duona", 6),
-                new Meal("Medaus pyragas", 6),
+                new Food("Saltibarsciai", 6),
+                new Food("Balandeliai", 12),
+                new Food("Kepta duona", 6),
+                new Food("Medaus pyragas", 6),
             };
 
-            _dataAccess.WriteCsv(_mealsFilePath, food);
+            _dataAccess.WriteCsv(_foodFilePath, food);
         }
     }
 }

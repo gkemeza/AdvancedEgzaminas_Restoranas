@@ -11,5 +11,7 @@
             Number = number;
             Seats = seats;
         }
+        public Table() { }
+
     }
 }
