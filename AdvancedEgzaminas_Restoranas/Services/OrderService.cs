@@ -81,13 +81,12 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void UpdateOrders(Order order)
         {
-            List<Order> orders = ReadJson<Order>();
+            List<Order> orders = ReadOrdersJson();
             orders.Add(order);
             WriteOrdersJson(orders);
         }
 
-        // fix error (cant deserialize abstract Product class)
-        private List<Order> ReadJson<Order>()
+        private List<Order> ReadOrdersJson()
         {
             var orders = new List<Order>();
             try
@@ -99,7 +98,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     {
                         if (!string.IsNullOrWhiteSpace(line))
                         {
-                            Order order = JsonSerializer.Deserialize<Order>(line);
+                            Order order = JsonSerializer.Deserialize<Order>(line, GetJsonSerializerOptions());
                             orders.Add(order);
                         }
                     }
@@ -109,8 +108,24 @@ namespace AdvancedEgzaminas_Restoranas.Services
             {
                 Console.WriteLine($"Error: {e}");
             }
-
+            catch (JsonException e)
+            {
+                Console.WriteLine($"Deserialization error: {e.Message}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unexpected error: {e.Message}");
+            }
             return orders;
+        }
+
+        private JsonSerializerOptions GetJsonSerializerOptions()
+        {
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new ProductConverter() }
+            };
+            return options;
         }
 
         private void WriteOrdersJson(List<Order> orders)
