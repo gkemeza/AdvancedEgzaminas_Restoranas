@@ -87,9 +87,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
         }
 
         // fix error (cant deserialize abstract Product class)
-        private List<T> ReadJson<T>()
+        private List<Order> ReadJson<Order>()
         {
-            var orders = new List<T>();
+            var orders = new List<Order>();
             try
             {
                 if (File.Exists(_ordersFilePath))
@@ -99,7 +99,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     {
                         if (!string.IsNullOrWhiteSpace(line))
                         {
-                            T order = JsonSerializer.Deserialize<T>(line);
+                            Order order = JsonSerializer.Deserialize<Order>(line);
                             orders.Add(order);
                         }
                     }
