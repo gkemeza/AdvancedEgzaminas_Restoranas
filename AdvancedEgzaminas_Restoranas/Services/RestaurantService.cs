@@ -60,29 +60,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     Console.WriteLine("Invalid choice!");
                     break;
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         private void BeginTable()
         {
             int number = _tableService.ChooseTable();
             _tableService.OccupyTable(number);
-            while (true)
-            {
-                _orderService.HandleOrderMenu();
-                {
-                    // AddProduct();
-                    {
-                        // DisplayProductsMenu();
-                        // or
-                        // EnterProductName();
-                    }
-                    // Service();
-                }
-            }
-            throw new NotImplementedException();
+            _orderService.HandleOrderMenu(number);
         }
 
         private void ShowOpenTables()

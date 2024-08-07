@@ -12,6 +12,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private readonly ITableService _tableService;
         private readonly IProductService _productService;
         private readonly UserInterface _userInterface;
+
         public OrderService(IDataAccess dataAccess, ITableService tableService, IProductService productService, UserInterface userInterface, string filePath)
         {
             _dataAccess = dataAccess;
@@ -33,30 +34,41 @@ namespace AdvancedEgzaminas_Restoranas.Services
             return new Order(table, products, totalPrice, DateTime.Now);
         }
 
-        public void HandleOrderMenu()
+        public void HandleOrderMenu(int tableNumber)
         {
-            _userInterface.DisplayOrderMenu();
-
-            string option = Console.ReadLine();
-            // TODO: validate input
-
-            switch (option)
+            string option = string.Empty;
+            while (option != "q")
             {
-                case "1":
-                    _productService.AddProduct();
-                    break;
-                case "2":
-                    //Service();
-                    break;
-                case "q":
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice!");
-                    break;
-            }
+                _userInterface.DisplayOrderMenu();
 
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
+                option = Console.ReadLine();
+                // TODO: validate input
+
+                var products = new List<Product>();
+                switch (option)
+                {
+                    case "1":
+                        products.Add(_productService.AddProduct());
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        Service(tableNumber, products);
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();
+                        break;
+                    case "q":
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        break;
+                }
+            }
+        }
+
+        public void Service(int tableNumber, List<Product> products)
+        {
+            CreateOrder(tableNumber, products);
         }
     }
 }
