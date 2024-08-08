@@ -27,5 +27,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
             receipts.Add(receipt);
             _dataAccess.WriteJson<Receipt>(_receiptsFilePath, receipts);
         }
+
+        public List<Receipt> GetReceipts()
+        {
+            return _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
+        }
     }
 }

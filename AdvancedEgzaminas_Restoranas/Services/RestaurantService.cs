@@ -1,4 +1,5 @@
-﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+﻿using AdvancedEgzaminas_Restoranas.Models;
+using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
 using System.Text;
 
@@ -92,7 +93,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 return;
             }
             Console.WriteLine("***** Open Tables *****\n");
-            foreach (var order in orders)
+            foreach (Order order in orders)
             {
                 Console.WriteLine($"Table Number: {order.Table.Number}");
                 Console.WriteLine($"Seats: {order.Table.Seats}");
@@ -111,7 +112,24 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void ShowReceipts()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            var receipts = _receiptService.GetReceipts();
+            if (receipts.Count == 0)
+            {
+                Console.WriteLine("No receipts found.");
+                return;
+            }
+            Console.WriteLine("***** Receipts *****\n");
+            foreach (Receipt receipt in receipts)
+            {
+                Console.WriteLine($"* {receipt.Type} receipt *");
+                Console.WriteLine($"ID: {receipt.Id}");
+                Console.WriteLine($"Order: {receipt.Order}");
+
+                Console.WriteLine(new string('-', 40));
+            }
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
 
         private void FinishOrder()
