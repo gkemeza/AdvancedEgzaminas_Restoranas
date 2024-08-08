@@ -1,6 +1,7 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using CsvHelper;
 using System.Globalization;
+using System.Text.Json;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -39,6 +40,54 @@ namespace AdvancedEgzaminas_Restoranas.Services
             {
                 csv.WriteRecords(data);
             }
+        }
+
+        public List<T> ReadJson<T>(string filePath)
+        {
+            var items = new List<T>();
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    string[] lines = File.ReadAllLines(filePath);
+                    foreach (string line in lines)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            var order = JsonSerializer.Deserialize<T>(line, GetJsonSerializerOptions());
+                            items.Add(order);
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine($"File not found: {e}");
+            }
+            catch (JsonException e)
+            {
+                Console.WriteLine($"Deserialization error: {e.Message}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unexpected error: {e.Message}");
+            }
+            return items;
+        }
+
+        public void WriteJson<T>(string filePath, List<T> data)
+        {
+            var lines = data.Select(item => JsonSerializer.Serialize(item));
+            File.WriteAllLines(filePath, lines);
+        }
+
+        private JsonSerializerOptions GetJsonSerializerOptions()
+        {
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new ProductConverter() }
+            };
+            return options;
         }
     }
 }

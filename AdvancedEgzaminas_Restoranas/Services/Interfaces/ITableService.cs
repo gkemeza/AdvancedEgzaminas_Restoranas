@@ -8,6 +8,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         Table GetTable(int tableNumber);
         bool AreFreeTables();
         bool IsTableAvailable(int tableNumber);
+        bool IsTableFree(int tableNumber);
         void FreeTable(int tableNumber);
         void OccupyTable(int tableNumber);
         void SaveTables();

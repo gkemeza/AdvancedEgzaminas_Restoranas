@@ -12,6 +12,7 @@ namespace AdvancedEgzaminas_Restoranas
         {
             IDataAccess dataAccess = new DataAccess();
             UserInterface userInterface = new UserInterface();
+            IReceiptService receiptService = new ReceiptService(dataAccess, @"..\..\..\Data\receipts.json");
             IProductService productService = new ProductService(
                 dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
             ITableService tableService = new TableService(
@@ -19,7 +20,7 @@ namespace AdvancedEgzaminas_Restoranas
             IOrderService orderService = new OrderService(
                 dataAccess, tableService, productService, userInterface, @"..\..\..\Data\orders.json");
             IRestaurantService restaurant = new RestaurantService(
-                dataAccess, userInterface, tableService, productService, orderService);
+                dataAccess, userInterface, tableService, productService, orderService, receiptService);
 
             restaurant.Run();
         }

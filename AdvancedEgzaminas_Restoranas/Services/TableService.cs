@@ -33,12 +33,24 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public bool AreFreeTables()
         {
+            _tables = _dataAccess.ReadCsv<Table>(_filePath);
             return _tables.Any(t => !t.IsOccupied);
         }
 
         public bool IsTableAvailable(int tableNumber)
         {
+            _tables = _dataAccess.ReadCsv<Table>(_filePath);
             return _tables.Any(t => t.Number == tableNumber && !t.IsOccupied);
+        }
+
+        public bool IsTableFree(int tableNumber)
+        {
+            if (_tables.Any(t => t.Number == tableNumber))
+            {
+                var table = GetTable(tableNumber);
+                return !table.IsOccupied;
+            }
+            else { return false; }
         }
 
         public void FreeTable(int tableNumber)

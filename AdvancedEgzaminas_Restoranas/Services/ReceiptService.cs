@@ -5,14 +5,27 @@ namespace AdvancedEgzaminas_Restoranas.Services
 {
     public class ReceiptService : IReceiptService
     {
-        public List<Receipt> GenerateReceipts(Order order)
+        private readonly IDataAccess _dataAccess;
+        private readonly string _receiptsFilePath;
+
+        public ReceiptService(IDataAccess dataAccess, string filePath)
         {
-            throw new NotImplementedException();
+            _dataAccess = dataAccess;
+            _receiptsFilePath = filePath;
         }
 
-        public void SaveRestaurantReceipt(Receipt receipt)
+        public Receipt HandleRestaurantReceipt(Order order)
         {
-            throw new NotImplementedException();
+            var receipt = new Receipt(order, "Restaurant");
+            AddReceipt(receipt);
+            return receipt;
+        }
+
+        private void AddReceipt(Receipt receipt)
+        {
+            var receipts = _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
+            receipts.Add(receipt);
+            _dataAccess.WriteJson<Receipt>(_receiptsFilePath, receipts);
         }
     }
 }

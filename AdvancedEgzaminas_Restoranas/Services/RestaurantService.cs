@@ -1,5 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
+using System.Text;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -11,15 +12,18 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private readonly ITableService _tableService;
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private readonly IReceiptService _receiptService;
 
         public RestaurantService(IDataAccess dataAccess, UserInterface userInterface,
-            ITableService tableService, IProductService productService, IOrderService orderService)
+            ITableService tableService, IProductService productService,
+            IOrderService orderService, IReceiptService receiptService)
         {
             _dataAccess = dataAccess;
             _userInterface = userInterface;
             _tableService = tableService;
             _productService = productService;
             _orderService = orderService;
+            _receiptService = receiptService;
         }
 
         public void Run()
@@ -81,7 +85,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private void ShowOpenTables()
         {
             Console.Clear();
-            var orders = _orderService.ReadOrdersJson();
+            var orders = _orderService.GetOrders();
             if (orders.Count == 0)
             {
                 Console.WriteLine("No open tables found.");
@@ -101,15 +105,31 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
                 Console.WriteLine(new string('-', 40));
             }
-            _orderService.FinishOrder();
+            FinishOrder();
 
-            //Console.WriteLine("\nPress any key to continue...");
-            //Console.ReadKey();
         }
 
         private void ShowReceipts()
         {
             throw new NotImplementedException();
+        }
+
+        private void FinishOrder()
+        {
+            int tableNumber = _userInterface.PromptForTableNumber();
+
+            var order = _orderService.GetOrder(tableNumber);
+            if (order != null)
+            {
+                _receiptService.HandleRestaurantReceipt(order);
+                _orderService.EndOrder(tableNumber);
+            }
+            else
+            {
+                Console.WriteLine("Wrong table number!");
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+            }
         }
 
 

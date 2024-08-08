@@ -6,8 +6,8 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
     {
         Order CreateOrder(int tableNumber, List<Product> products);
         void HandleOrderMenu(int tableNumber);
-        List<Order> ReadOrdersJson();
-
-        void FinishOrder();
+        void EndOrder(int tableNumber);
+        Order? GetOrder(int tableNumber);
+        List<Order> GetOrders();
     }
 }

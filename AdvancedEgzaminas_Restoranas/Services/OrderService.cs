@@ -1,14 +1,11 @@
 ﻿using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
-using System.Text.Json;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
-    // save to orders.csv
     public class OrderService : IOrderService
     {
-        //private List<Order> _orders;
         private readonly IDataAccess _dataAccess;
         private readonly ITableService _tableService;
         private readonly IProductService _productService;
@@ -82,62 +79,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void UpdateOrders(Order order)
         {
-            List<Order> orders = ReadOrdersJson();
+            List<Order> orders = _dataAccess.ReadJson<Order>(_ordersFilePath);
             orders.Add(order);
-            WriteOrdersJson(orders);
+            _dataAccess.WriteJson<Order>(_ordersFilePath, orders);
         }
 
-        public List<Order> ReadOrdersJson()
+        public void EndOrder(int tableNumber)
         {
-            var orders = new List<Order>();
-            try
-            {
-                if (File.Exists(_ordersFilePath))
-                {
-                    string[] lines = File.ReadAllLines(_ordersFilePath);
-                    foreach (string line in lines)
-                    {
-                        if (!string.IsNullOrWhiteSpace(line))
-                        {
-                            Order order = JsonSerializer.Deserialize<Order>(line, GetJsonSerializerOptions());
-                            orders.Add(order);
-                        }
-                    }
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-                Console.WriteLine($"File not found: {e}");
-            }
-            catch (JsonException e)
-            {
-                Console.WriteLine($"Deserialization error: {e.Message}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Unexpected error: {e.Message}");
-            }
-            return orders;
-        }
-
-        private JsonSerializerOptions GetJsonSerializerOptions()
-        {
-            var options = new JsonSerializerOptions
-            {
-                Converters = { new ProductConverter() }
-            };
-            return options;
-        }
-
-        private void WriteOrdersJson(List<Order> orders)
-        {
-            var lines = orders.Select(order => JsonSerializer.Serialize(order));
-            File.WriteAllLines(_ordersFilePath, lines);
-        }
-
-        public void FinishOrder()
-        {
-            int tableNumber = PromptForTableNumber();
             RemoveOrder(tableNumber);
             _tableService.FreeTable(tableNumber);
         }
@@ -146,13 +94,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             try
             {
-                var orders = ReadOrdersJson();
+                var orders = _dataAccess.ReadJson<Order>(_ordersFilePath);
                 var orderToRemove = orders.Find(o => o.Table.Number == tableNumber);
 
                 if (orderToRemove != null)
                 {
                     orders.Remove(orderToRemove);
-                    WriteOrdersJson(orders);
+                    _dataAccess.WriteJson<Order>(_ordersFilePath, orders);
                 }
                 else
                 {
@@ -165,17 +113,15 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
         }
 
-        private int PromptForTableNumber()
+        public Order GetOrder(int tableNumber)
         {
-            Console.WriteLine("Choose table number to finish order:");
-            return int.Parse(Console.ReadLine());
-            // TODO: validation
+            var orders = _dataAccess.ReadJson<Order>(_ordersFilePath);
+            return orders.FirstOrDefault(o => o.Table.Number == tableNumber);
         }
 
-        private Order GetOrder(int tableNumber)
+        public List<Order> GetOrders()
         {
-            var orders = ReadOrdersJson();
-            return orders.First(o => o.Table.Number == tableNumber);
+            return _dataAccess.ReadJson<Order>(_ordersFilePath);
         }
     }
 }

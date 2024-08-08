@@ -21,5 +21,19 @@
             Console.WriteLine("q. Go back");
         }
 
+        public int PromptForTableNumber()
+        {
+            int result = 0;
+            Console.WriteLine("Choose table number to finish order:");
+
+            if (int.TryParse(Console.ReadLine(), out int tableNumber))
+            {
+                if (tableNumber > 0 || tableNumber <= 10)
+                {
+                    result = tableNumber;
+                }
+            }
+            return result;
+        }
     }
 }
