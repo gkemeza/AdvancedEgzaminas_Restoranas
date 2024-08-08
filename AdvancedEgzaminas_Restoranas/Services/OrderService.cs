@@ -61,8 +61,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
                         break;
                     case "2":
                         Service(tableNumber, products);
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();
                         break;
                     case "q":
                         break;
@@ -77,6 +75,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             Order order = CreateOrder(tableNumber, products);
             UpdateOrders(order);
+            Console.WriteLine("\nOrder was created");
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
         }
 
         private void UpdateOrders(Order order)
@@ -132,6 +133,49 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             var lines = orders.Select(order => JsonSerializer.Serialize(order));
             File.WriteAllLines(_ordersFilePath, lines);
+        }
+
+        public void FinishOrder()
+        {
+            int tableNumber = PromptForTableNumber();
+            RemoveOrder(tableNumber);
+            _tableService.FreeTable(tableNumber);
+        }
+
+        private void RemoveOrder(int tableNumber)
+        {
+            try
+            {
+                var orders = ReadOrdersJson();
+                var orderToRemove = orders.Find(o => o.Table.Number == tableNumber);
+
+                if (orderToRemove != null)
+                {
+                    orders.Remove(orderToRemove);
+                    WriteOrdersJson(orders);
+                }
+                else
+                {
+                    Console.WriteLine($"No order found for table {tableNumber}.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error removing order: {e.Message}");
+            }
+        }
+
+        private int PromptForTableNumber()
+        {
+            Console.WriteLine("Choose table number to finish order:");
+            return int.Parse(Console.ReadLine());
+            // TODO: validation
+        }
+
+        private Order GetOrder(int tableNumber)
+        {
+            var orders = ReadOrdersJson();
+            return orders.First(o => o.Table.Number == tableNumber);
         }
     }
 }

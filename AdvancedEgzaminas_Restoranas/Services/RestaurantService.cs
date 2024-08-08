@@ -24,9 +24,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public void Run()
         {
-            _productService.SeedDrinks();
-            _productService.SeedFood();
-            _tableService.SeedTables();
+            //_productService.SeedDrinks();
+            //_productService.SeedFood();
+            //_tableService.SeedTables();
 
             while (true)
             {
@@ -65,8 +65,17 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private void BeginTable()
         {
             int number = _tableService.ChooseTable();
-            _tableService.OccupyTable(number);
-            _orderService.HandleOrderMenu(number);
+            if (_tableService.IsTableAvailable(number))
+            {
+                _tableService.OccupyTable(number);
+                _orderService.HandleOrderMenu(number);
+            }
+            else
+            {
+                Console.WriteLine("Table is taken!");
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+            }
         }
 
         private void ShowOpenTables()
@@ -78,10 +87,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 Console.WriteLine("No open tables found.");
                 return;
             }
-            Console.WriteLine("***** Open Tables *****:\n");
+            Console.WriteLine("***** Open Tables *****\n");
             foreach (var order in orders)
             {
-                Console.WriteLine($"Order ID: {order.ID}");
                 Console.WriteLine($"Table Number: {order.Table.Number}");
                 Console.WriteLine($"Seats: {order.Table.Seats}");
                 Console.WriteLine($"Order Time: {order.OrderTime}");
@@ -93,9 +101,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
                 Console.WriteLine(new string('-', 40));
             }
+            _orderService.FinishOrder();
 
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
+            //Console.WriteLine("\nPress any key to continue...");
+            //Console.ReadKey();
         }
 
         private void ShowReceipts()

@@ -13,7 +13,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             _dataAccess = dataAccess;
             _filePath = filePath;
-            //_tables = _dataAccess.ReadCsv<Table>(_filePath);
+            _tables = _dataAccess.ReadCsv<Table>(_filePath);
         }
 
         public int ChooseTable()
@@ -47,12 +47,12 @@ namespace AdvancedEgzaminas_Restoranas.Services
             if (table != null && table.IsOccupied)
             {
                 table.IsOccupied = false;
+                SaveTables();
             }
             else
             {
                 Console.WriteLine("Stalas nerastas arba laisvas!");
             }
-            SaveTables();
         }
 
         public void OccupyTable(int tableNumber)
