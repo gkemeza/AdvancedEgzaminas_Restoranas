@@ -11,7 +11,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         bool IsTableFree(int tableNumber);
         void FreeTable(int tableNumber);
         void OccupyTable(int tableNumber);
-        void SaveTables();
+        void UpdateTablesInFile();
         int ChooseTable();
         void SeedTables();
     }

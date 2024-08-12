@@ -16,6 +16,25 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _tables = _dataAccess.ReadCsv<Table>(_filePath);
         }
 
+        private List<Table> LoadTables()
+        {
+            try
+            {
+                return _dataAccess.ReadCsv<Table>(_filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error! Failed to load tables from CSV -> {ex}");
+                return new List<Table>();
+            }
+        }
+
+        // Reload tables explicitly if needed
+        public void ReloadTables()
+        {
+            _tables = LoadTables();
+        }
+
         public int ChooseTable()
         {
             Console.WriteLine("Enter table number (1-10):");
@@ -27,7 +46,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public Table? GetTable(int tableNumber)
         {
-            _tables = _dataAccess.ReadCsv<Table>(_filePath);
             return _tables.FirstOrDefault(t => t.Number == tableNumber);
         }
 
@@ -59,7 +77,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             if (table != null && table.IsOccupied)
             {
                 table.IsOccupied = false;
-                SaveTables();
+                UpdateTablesInFile();
             }
             else
             {
@@ -78,10 +96,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
             {
                 Console.WriteLine("Stalas nerastas arba uzimtas!");
             }
-            SaveTables();
+            UpdateTablesInFile();
         }
 
-        public void SaveTables() => _dataAccess.WriteCsv<Table>(_filePath, _tables);
+        public void UpdateTablesInFile() => _dataAccess.WriteCsv<Table>(_filePath, _tables);
 
         public void SeedTables()
         {
