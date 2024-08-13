@@ -140,9 +140,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 Console.WriteLine("Products:");
                 foreach (var product in order.Products)
                 {
-                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price:C}");
+                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price} Eur");
                 }
-                Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
+                Console.WriteLine($"Total Amount: {order.TotalAmount} Eur");
                 Console.WriteLine(new string('-', 40));
             }
         }
