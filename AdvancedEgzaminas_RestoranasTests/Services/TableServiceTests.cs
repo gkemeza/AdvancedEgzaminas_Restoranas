@@ -6,21 +6,29 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     [TestClass()]
     public class TableServiceTests
     {
+        private TableService _tableService;
+
+        [TestInitialize()]
+        public void Setup()
+        {
+            var testTables = new List<Table>()
+            {
+                new Table(1, 2, false),
+                new Table(2, 4, true),
+            };
+
+            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+        }
+
         [TestMethod()]
         public void GetTableTest_ReturnsCorrectTable()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 2, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 1;
             int expectedTableNumber = 1;
 
             // Act 
-            var table = service.GetTable(1);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNotNull(table);
@@ -32,16 +40,10 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetTableTest_ReturnsNullForNonExistingTable()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 2, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 99;
 
             // Act 
-            var table = service.GetTable(99);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNull(table);
@@ -52,10 +54,11 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         {
             // Arrange
             var testTables = new List<Table>();
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 1;
 
             // Act 
-            var table = service.GetTable(1);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNull(table);
@@ -65,17 +68,11 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetTableTest_ReturnsCorrectOccupiedStatus()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 2, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 2;
             bool expectedOccupiedStatus = true;
 
             // Act 
-            var table = service.GetTable(2);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNotNull(table);
@@ -86,17 +83,11 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetTableTest_ReturnsCorrectSeats()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 4, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 2;
             int expectedSeats = 4;
 
             // Act 
-            var table = service.GetTable(2);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNotNull(table);
@@ -107,16 +98,10 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetTableTest_ReturnsFirstTableCorrectly()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 4, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 1;
 
             // Act 
-            var table = service.GetTable(1);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNotNull(table);
@@ -129,16 +114,10 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetTableTest_ReturnsLastTableCorrectly()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 4, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 2;
 
             // Act 
-            var table = service.GetTable(2);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNotNull(table);
@@ -148,23 +127,108 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         }
 
         [TestMethod()]
-        public void GetTableTest_HandlesNegativeTableNumber()
+        public void GetTableTest_ReturnsNullIfNegativeTableNumber()
         {
             // Arrange
-            var testTables = new List<Table>()
-            {
-                new Table(1, 2, false),
-                new Table(2, 4, true)
-            };
-
-            var service = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = -1;
 
             // Act 
-            var table = service.GetTable(-1);
+            var table = _tableService.GetTable(tableNumber);
 
             // Assert
             Assert.IsNull(table);
         }
+
+        [TestMethod()]
+        public void IsTableAvailableTest_ReturnsTrueIfFreeTableExists()
+        {
+            // Arrange
+            int tableNumber = 1;
+
+            // Act
+            bool result = _tableService.IsTableAvailable(tableNumber);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsTableAvailableTest_ReturnsFalseIfOccupiedTableExists()
+        {
+            // Arrange
+            int tableNumber = 2;
+
+            // Act
+            bool result = _tableService.IsTableAvailable(tableNumber);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsTableAvailableTest_ReturnsFalseIfTableDoesNotExist()
+        {
+            // Arrange
+            int tableNumber = 99;
+
+            // Act
+            bool result = _tableService.IsTableAvailable(tableNumber);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsTableAvailableTest_ReturnsFalseIfEmptyTableList()
+        {
+            // Arrange
+            var testTables = new List<Table>();
+            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+            int tableNumber = 1;
+
+            // Act
+            bool result = _tableService.IsTableAvailable(tableNumber);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void FreeTable_ReturnsTrueIfOccupiedTableExists()
+        {
+            // Arrange
+            int tableNumber = 2;
+
+            // Act
+            bool result = _tableService.FreeTable(tableNumber);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsFalse(_tableService.GetTable(tableNumber).IsOccupied);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void FreeTable_ThrowsExceptionIfTableDoesNotExist()
+        {
+            // Arrange
+            int tableNumber = 99;
+
+            // Act
+            _tableService.FreeTable(tableNumber);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void FreeTable_ThrowsExceptionIfTableIsFree()
+        {
+            // Arrange
+            int tableNumber = 1;
+
+            // Act
+            _tableService.FreeTable(tableNumber);
+        }
+
     }
 
     public class FakeDataAccess : IDataAccess
