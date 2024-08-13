@@ -9,6 +9,7 @@
             Console.WriteLine("1. Begin table");
             Console.WriteLine("2. Open tables");
             Console.WriteLine("3. Receipts");
+            Console.WriteLine("4. View Tables");
             Console.WriteLine("q. Exit");
         }
 

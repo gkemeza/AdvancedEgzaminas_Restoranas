@@ -1,11 +1,9 @@
 ﻿using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
-using System.Text;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
-    // to not write code in program.cs
     public class RestaurantService : IRestaurantService
     {
         private readonly IDataAccess _dataAccess;
@@ -57,6 +55,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 case "3":
                     ShowReceipts();
                     break;
+                case "4":
+                    ViewTables();
+                    break;
                 case "q":
                     Console.WriteLine("Exiting...");
                     Environment.Exit(0);
@@ -87,25 +88,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             Console.Clear();
             var orders = _orderService.GetOrders();
-            if (orders.Count == 0)
-            {
-                Console.WriteLine("No open tables found.");
-                return;
-            }
-            Console.WriteLine("***** Open Tables *****\n");
-            foreach (Order order in orders)
-            {
-                Console.WriteLine($"Table Number: {order.Table.Number}");
-                Console.WriteLine($"Seats: {order.Table.Seats}");
-                Console.WriteLine($"Order Time: {order.OrderTime}");
-                Console.WriteLine("Products:");
-                foreach (var product in order.Products)
-                {
-                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price:C}");
-                }
-                Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
-                Console.WriteLine(new string('-', 40));
-            }
+
+            _orderService.PrintOrders(orders);
+
             FinishOrder();
 
         }
@@ -150,6 +135,14 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
         }
 
+        private void ViewTables()
+        {
+            Console.Clear();
+            _tableService.PrintTables();
+
+            Console.WriteLine("\nPress any key to go back.");
+            Console.ReadKey();
+        }
 
     }
 }
