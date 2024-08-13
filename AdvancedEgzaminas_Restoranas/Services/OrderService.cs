@@ -123,5 +123,28 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             return _dataAccess.ReadJson<Order>(_ordersFilePath);
         }
+
+        public void PrintOrders(List<Order> orders)
+        {
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("No open tables found.");
+                return;
+            }
+            Console.WriteLine("***** Open Tables *****\n");
+            foreach (Order order in orders)
+            {
+                Console.WriteLine($"Table Number: {order.Table.Number}");
+                Console.WriteLine($"Seats: {order.Table.Seats}");
+                Console.WriteLine($"Order Time: {order.OrderTime}");
+                Console.WriteLine("Products:");
+                foreach (var product in order.Products)
+                {
+                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price:C}");
+                }
+                Console.WriteLine($"Total Amount: {order.TotalAmount:C}");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
     }
 }
