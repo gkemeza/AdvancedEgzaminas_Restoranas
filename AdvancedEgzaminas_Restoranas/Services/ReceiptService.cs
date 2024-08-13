@@ -32,5 +32,33 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             return _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
         }
+
+        public void PrintReceipts(List<Receipt> receipts)
+        {
+            Random rand = new Random();
+            if (receipts.Count == 0)
+            {
+                Console.WriteLine("No receipts found.");
+                return;
+            }
+            Console.WriteLine("***** Receipts *****\n");
+            foreach (Receipt receipt in receipts)
+            {
+                Console.WriteLine($"{receipt.Type} receipt");
+                Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
+
+                Console.WriteLine("Check | Tbl | Opened | Amt Due");
+                Console.WriteLine(new string('-', 36));
+
+                Console.WriteLine($"{rand.Next(100, 1000)} | {receipt.Order.Table.Number} | " +
+                    $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
+
+                Console.WriteLine($"Receipt Num. {receipt.Id}");
+
+                Console.WriteLine();
+                Console.WriteLine(new string('-', 50));
+                Console.WriteLine();
+            }
+        }
     }
 }

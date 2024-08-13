@@ -6,5 +6,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
     {
         Receipt HandleRestaurantReceipt(Order order);
         List<Receipt> GetReceipts();
+        void PrintReceipts(List<Receipt> receipts);
     }
 }
