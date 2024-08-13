@@ -9,5 +9,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         void EndOrder(int tableNumber);
         Order? GetOrder(int tableNumber);
         List<Order> GetOrders();
+        void PrintOrders(List<Order> orders);
     }
 }
