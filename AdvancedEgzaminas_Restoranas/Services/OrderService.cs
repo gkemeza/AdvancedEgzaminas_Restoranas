@@ -39,7 +39,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             string option = string.Empty;
             var products = new List<Product>();
 
-            while (option != "q" && option != "2")
+            while (option != "2")
             {
                 _userInterface.DisplayOrderMenu();
 
@@ -58,8 +58,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
                         break;
                     case "2":
                         Service(tableNumber, products);
-                        break;
-                    case "q":
                         break;
                     default:
                         Console.WriteLine("Invalid choice!");
@@ -88,6 +86,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             RemoveOrder(tableNumber);
             _tableService.FreeTable(tableNumber);
+            _tableService.UpdateTablesInFile();
         }
 
         private void RemoveOrder(int tableNumber)

@@ -26,7 +26,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 catch (ReaderException ex)
                 {
                     Console.WriteLine($"Error reading CSV: {ex.Message}");
-                    Console.WriteLine($"Error occurred on row {ex.Context.Parser.Row}");
                     throw;
                 }
             }

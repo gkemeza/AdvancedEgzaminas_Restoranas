@@ -66,38 +66,29 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public bool AreFreeTables()
         {
-            _tables = _dataAccess.ReadCsv<Table>(_filePath);
             return _tables.Any(t => !t.IsOccupied);
         }
 
         public bool IsTableAvailable(int tableNumber)
         {
-            _tables = _dataAccess.ReadCsv<Table>(_filePath);
             return _tables.Any(t => t.Number == tableNumber && !t.IsOccupied);
         }
 
-        public bool IsTableFree(int tableNumber)
-        {
-            if (_tables.Any(t => t.Number == tableNumber))
-            {
-                var table = GetTable(tableNumber);
-                return !table.IsOccupied;
-            }
-            else { return false; }
-        }
-
-        public void FreeTable(int tableNumber)
+        public bool FreeTable(int tableNumber)
         {
             var table = GetTable(tableNumber);
-            if (table != null && table.IsOccupied)
+
+            if (table == null)
             {
-                table.IsOccupied = false;
-                UpdateTablesInFile();
+                throw new ArgumentException($"Table {tableNumber} does not exist.");
             }
-            else
+            if (!table.IsOccupied)
             {
-                Console.WriteLine("Stalas nerastas arba laisvas!");
+                throw new Exception($"Table {tableNumber} is already free.");
             }
+
+            table.IsOccupied = false;
+            return true;
         }
 
         public void OccupyTable(int tableNumber)

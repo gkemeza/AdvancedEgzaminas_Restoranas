@@ -19,7 +19,6 @@
             Console.WriteLine("***** Order *****");
             Console.WriteLine("1. Add product");
             Console.WriteLine("2. Service");
-            Console.WriteLine("q. Go back");
         }
 
         public int PromptForTableNumber()
