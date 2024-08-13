@@ -1,16 +1,17 @@
 ﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.Services;
 using AdvancedEgzaminas_Restoranas.UI;
+using AdvancedEgzaminas_Restoranas.DataAccess;
 
 namespace AdvancedEgzaminas_Restoranas
 {
-    // - use Singleton pattern
+    // TODO: use Singleton pattern
 
     public class Program
     {
         static void Main(string[] args)
         {
-            IDataAccess dataAccess = new DataAccess();
+            IDataAccess dataAccess = new DataAccess.DataAccess();
             UserInterface userInterface = new UserInterface();
             IReceiptService receiptService = new ReceiptService(dataAccess, @"..\..\..\Data\receipts.json");
             IProductService productService = new ProductService(

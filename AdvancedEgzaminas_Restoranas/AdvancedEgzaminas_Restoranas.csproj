@@ -8,11 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CsvHelper" Version="33.0.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Data\" />
+		<PackageReference Include="CsvHelper" Version="33.0.1" />
 	</ItemGroup>
 
 </Project>

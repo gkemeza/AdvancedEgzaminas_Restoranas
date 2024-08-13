@@ -1,4 +1,4 @@
-﻿namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
+﻿namespace AdvancedEgzaminas_Restoranas.DataAccess
 {
     public interface IDataAccess
     {

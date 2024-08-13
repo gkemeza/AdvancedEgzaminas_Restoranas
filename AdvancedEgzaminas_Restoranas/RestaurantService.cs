@@ -1,8 +1,9 @@
-﻿using AdvancedEgzaminas_Restoranas.Models;
+﻿using AdvancedEgzaminas_Restoranas.DataAccess;
+using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
 
-namespace AdvancedEgzaminas_Restoranas.Services
+namespace AdvancedEgzaminas_Restoranas
 {
     public class RestaurantService : IRestaurantService
     {

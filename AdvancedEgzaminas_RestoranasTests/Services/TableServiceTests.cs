@@ -1,5 +1,5 @@
-﻿using AdvancedEgzaminas_Restoranas.Models;
-using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+﻿using AdvancedEgzaminas_Restoranas.DataAccess;
+using AdvancedEgzaminas_Restoranas.Models;
 
 namespace AdvancedEgzaminas_Restoranas.Services.Tests
 {

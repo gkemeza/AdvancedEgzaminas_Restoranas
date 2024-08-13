@@ -1,9 +1,8 @@
-﻿using AdvancedEgzaminas_Restoranas.Services.Interfaces;
-using CsvHelper;
+﻿using CsvHelper;
 using System.Globalization;
 using System.Text.Json;
 
-namespace AdvancedEgzaminas_Restoranas.Services
+namespace AdvancedEgzaminas_Restoranas.DataAccess
 {
     public class DataAccess : IDataAccess
     {
