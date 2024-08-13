@@ -29,6 +29,23 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
         }
 
+        public void PrintTables()
+        {
+            Console.WriteLine("***** Tables *****\n");
+            foreach (var table in _tables)
+            {
+                Console.Write($"{table.Number}. {table.Seats} seats - ");
+                if (table.IsOccupied)
+                {
+                    Console.WriteLine($"(taken)");
+                }
+                else
+                {
+                    Console.WriteLine($"(free)");
+                }
+            }
+        }
+
         // Reload tables explicitly if needed
         public void ReloadTables()
         {
@@ -41,8 +58,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             // TODO: validate input
             return int.Parse(Console.ReadLine());
         }
-
-        public List<Table> GetAllTables() => _tables;
 
         public Table? GetTable(int tableNumber)
         {
