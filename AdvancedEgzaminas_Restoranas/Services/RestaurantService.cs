@@ -27,9 +27,9 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public void Run()
         {
-            //_productService.SeedDrinks();
-            //_productService.SeedFood();
-            //_tableService.SeedTables();
+            _productService.SeedDrinks();
+            _productService.SeedFood();
+            _tableService.SeedTables();
 
             while (true)
             {
@@ -79,7 +79,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             else
             {
                 Console.WriteLine("Table is taken!");
-                Console.WriteLine("\nPress any key to continue...");
+                Console.WriteLine("\nPress any key to go back.");
                 Console.ReadKey();
             }
         }
@@ -99,21 +99,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             Console.Clear();
             var receipts = _receiptService.GetReceipts();
-            if (receipts.Count == 0)
-            {
-                Console.WriteLine("No receipts found.");
-                return;
-            }
-            Console.WriteLine("***** Receipts *****\n");
-            foreach (Receipt receipt in receipts)
-            {
-                Console.WriteLine($"* {receipt.Type} receipt *");
-                Console.WriteLine($"ID: {receipt.Id}");
-                Console.WriteLine($"Order: {receipt.Order}");
 
-                Console.WriteLine(new string('-', 40));
-            }
-            Console.WriteLine("\nPress any key to continue...");
+            _receiptService.PrintReceipts(receipts);
+
+            Console.WriteLine("\nPress any key to go back.");
             Console.ReadKey();
         }
 
@@ -126,11 +115,15 @@ namespace AdvancedEgzaminas_Restoranas.Services
             {
                 _receiptService.HandleRestaurantReceipt(order);
                 _orderService.EndOrder(tableNumber);
+
+                Console.WriteLine("Order was finished.");
+                Console.WriteLine("\nPress any key to go back.");
+                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine("Wrong table number!");
-                Console.WriteLine("\nPress any key to continue...");
+                Console.WriteLine("\nPress any key to go back.");
                 Console.ReadKey();
             }
         }

@@ -1,11 +1,11 @@
 Number,Seats,IsOccupied
 1,2,False
-2,2,True
+2,2,False
 3,2,False
 4,4,False
-5,4,True
+5,4,False
 6,2,False
-7,12,True
+7,12,False
 8,2,False
 9,2,False
-10,2,True
+10,2,False
