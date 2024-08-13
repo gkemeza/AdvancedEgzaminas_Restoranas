@@ -4,7 +4,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
 {
     public interface ITableService
     {
-        List<Table> GetAllTables();
         Table GetTable(int tableNumber);
         bool AreFreeTables();
         bool IsTableAvailable(int tableNumber);
@@ -14,5 +13,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         void UpdateTablesInFile();
         int ChooseTable();
         void SeedTables();
+        void PrintTables();
     }
 }
