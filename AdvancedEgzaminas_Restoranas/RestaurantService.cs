@@ -53,7 +53,7 @@ namespace AdvancedEgzaminas_Restoranas
                     ShowOpenTables();
                     break;
                 case "3":
-                    ShowReceipts();
+                    _receiptService.ShowReceipts();
                     break;
                 case "4":
                     ViewTables();
@@ -94,17 +94,6 @@ namespace AdvancedEgzaminas_Restoranas
 
             FinishOrder();
 
-        }
-
-        private void ShowReceipts()
-        {
-            Console.Clear();
-            var receipts = _receiptService.GetReceipts();
-
-            _receiptService.PrintReceipts(receipts);
-
-            Console.WriteLine("\nPress any key to go back.");
-            Console.ReadKey();
         }
 
         private void FinishOrder()

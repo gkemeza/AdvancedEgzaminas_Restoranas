@@ -1,7 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
-using System.Globalization;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -18,14 +17,14 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public Receipt HandleRestaurantReceipt(Order order)
         {
-            var receipt = new Receipt(order, "Restaurant");
+            var receipt = new Receipt(order, ReceiptType.Restaurant);
             AddReceipt(receipt);
             return receipt;
         }
 
         public Receipt HandleClientReceipt(Order order)
         {
-            var receipt = new Receipt(order, "Client");
+            var receipt = new Receipt(order, ReceiptType.Client);
             AddReceipt(receipt);
             return receipt;
         }
@@ -59,23 +58,25 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _dataAccess.WriteJson<Receipt>(_receiptsFilePath, receipts);
         }
 
-        public List<Receipt> GetReceipts()
+        public List<Receipt> GetAllReceipts()
         {
             return _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
         }
 
-        public void PrintReceipts(List<Receipt> receipts)
+        public void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType)
         {
+            Console.Clear();
             Random rand = new Random();
-            if (receipts.Count == 0)
+            var filteredReceipts = receipts.Where(r => r.Type == receiptType).ToList();
+
+            if (filteredReceipts.Count == 0)
             {
                 Console.WriteLine("No receipts found.");
                 return;
             }
-            Console.WriteLine("***** Receipts *****\n");
-            foreach (Receipt receipt in receipts)
+            Console.WriteLine($"***** {receiptType} Receipts *****\n");
+            foreach (Receipt receipt in filteredReceipts)
             {
-                Console.WriteLine($"{receipt.Type} receipt");
                 Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
 
                 Console.WriteLine("Check | Tbl | Opened | Amt Due");
@@ -85,10 +86,44 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
 
                 Console.WriteLine($"Receipt Num. {receipt.Id}");
-
                 Console.WriteLine();
                 Console.WriteLine(new string('-', 50));
                 Console.WriteLine();
+            }
+        }
+
+        public void ShowReceipts()
+        {
+            Console.Clear();
+            var receipts = GetAllReceipts();
+            PromptAndPrintReceipts(receipts);
+
+            Console.WriteLine("\nPress any key to go back.");
+            Console.ReadKey();
+        }
+
+        private void PromptAndPrintReceipts(List<Receipt> allReceipts)
+        {
+            Console.WriteLine("Choose receipts type:");
+            foreach (ReceiptType type in Enum.GetValues(typeof(ReceiptType)))
+            {
+                Console.WriteLine($"- {type}");
+            }
+
+            while (true)
+            {
+                Console.Write("\nEnter your choice: ");
+                string userInput = Console.ReadLine();
+
+                if (Enum.TryParse(userInput, true, out ReceiptType chosenType))
+                {
+                    PrintReceipts(allReceipts, chosenType);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid receipt type!");
+                }
             }
         }
     }
