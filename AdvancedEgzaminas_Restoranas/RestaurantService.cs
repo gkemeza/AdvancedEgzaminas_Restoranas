@@ -74,6 +74,7 @@ namespace AdvancedEgzaminas_Restoranas
             if (_tableService.IsTableAvailable(number))
             {
                 _tableService.OccupyTable(number);
+                _tableService.UpdateTablesInFile();
                 _orderService.HandleOrderMenu(number);
             }
             else

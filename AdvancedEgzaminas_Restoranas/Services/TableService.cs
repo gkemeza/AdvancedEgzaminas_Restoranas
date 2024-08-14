@@ -85,25 +85,28 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
             if (!table.IsOccupied)
             {
-                throw new Exception($"Table {tableNumber} is already free.");
+                throw new InvalidOperationException($"Table {tableNumber} is already free.");
             }
 
             table.IsOccupied = false;
             return true;
         }
 
-        public void OccupyTable(int tableNumber)
+        public bool OccupyTable(int tableNumber)
         {
             var table = GetTable(tableNumber);
-            if (table != null && !table.IsOccupied)
+
+            if (table == null)
             {
-                table.IsOccupied = true;
+                throw new ArgumentException($"Table {tableNumber} does not exist.");
             }
-            else
+            if (table.IsOccupied)
             {
-                Console.WriteLine("Stalas nerastas arba uzimtas!");
+                throw new InvalidOperationException($"Table {tableNumber} is already occupied.");
             }
-            UpdateTablesInFile();
+
+            table.IsOccupied = true;
+            return true;
         }
 
         public void UpdateTablesInFile() => _dataAccess.WriteCsv<Table>(_filePath, _tables);
