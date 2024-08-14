@@ -194,7 +194,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         }
 
         [TestMethod]
-        public void FreeTable_ReturnsTrueIfOccupiedTableExists()
+        public void FreeTableTest_ReturnsTrueIfOccupiedTableIsValid()
         {
             // Arrange
             int tableNumber = 2;
@@ -209,7 +209,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void FreeTable_ThrowsExceptionIfTableDoesNotExist()
+        public void FreeTableTest_ThrowsArgumentExceptionIfTableDoesNotExist()
         {
             // Arrange
             int tableNumber = 99;
@@ -219,14 +219,51 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void FreeTable_ThrowsExceptionIfTableIsFree()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void FreeTableTest_ThrowsInvalidOperationExceptionIfTableIsAlreadyFree()
         {
             // Arrange
             int tableNumber = 1;
 
             // Act
             _tableService.FreeTable(tableNumber);
+        }
+
+
+        [TestMethod]
+        public void OccupyTableTest_ReturnsTrueIfUnoccupiedTableIsValid()
+        {
+            // Arrange
+            int tableNumber = 1;
+
+            // Act
+            bool result = _tableService.OccupyTable(tableNumber);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsTrue(_tableService.GetTable(tableNumber).IsOccupied);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void OccupyTableTest_ThrowsArgumentExceptionIfTableDoesNotExist()
+        {
+            // Arrange
+            int tableNumber = 99;
+
+            // Act
+            _tableService.OccupyTable(tableNumber);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void OccupyTableTest_ThrowsInvalidOperationExceptionIfTableIsAlreadyOccupied()
+        {
+            // Arrange
+            int tableNumber = 2;
+
+            // Act
+            _tableService.OccupyTable(tableNumber);
         }
 
     }
