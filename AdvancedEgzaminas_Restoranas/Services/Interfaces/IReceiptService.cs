@@ -10,5 +10,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         List<Receipt> GetAllReceipts();
         void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType);
         void ShowReceipts();
+        void SendEmail();
     }
 }

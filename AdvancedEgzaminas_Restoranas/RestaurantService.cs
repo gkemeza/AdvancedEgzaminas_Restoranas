@@ -108,6 +108,8 @@ namespace AdvancedEgzaminas_Restoranas
                 {
                     _receiptService.HandleClientReceipt(order);
                 }
+                _receiptService.SendEmail();
+
                 _orderService.EndOrder(tableNumber);
 
                 Console.WriteLine("Order was finished.");

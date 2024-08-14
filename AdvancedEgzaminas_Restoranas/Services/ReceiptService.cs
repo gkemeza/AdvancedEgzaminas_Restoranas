@@ -126,5 +126,35 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 }
             }
         }
+
+        public void SendEmail()
+        {
+            if (IsEmailSendNeeded())
+            {
+                Console.WriteLine("Email was sent.");
+            }
+        }
+
+        private bool IsEmailSendNeeded()
+        {
+            string choice;
+            do
+            {
+                Console.WriteLine("Send receipt(s) to email? (Y/N)");
+                choice = Console.ReadLine();
+            }
+            while (choice.ToLower() != "y" && choice.ToLower() != "n");
+
+            if (choice == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (choice.ToLower() == "y")
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

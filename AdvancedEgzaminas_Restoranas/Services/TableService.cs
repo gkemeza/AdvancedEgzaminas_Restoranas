@@ -55,6 +55,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public int ChooseTable()
         {
+            Console.Clear();
             Console.WriteLine("Enter table number (1-10):");
             // TODO: validate input
             return int.Parse(Console.ReadLine());
