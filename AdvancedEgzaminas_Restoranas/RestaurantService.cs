@@ -115,6 +115,10 @@ namespace AdvancedEgzaminas_Restoranas
             if (order != null)
             {
                 _receiptService.HandleRestaurantReceipt(order);
+                if (_receiptService.IsClientReceiptNeeded())
+                {
+                    _receiptService.HandleClientReceipt(order);
+                }
                 _orderService.EndOrder(tableNumber);
 
                 Console.WriteLine("Order was finished.");

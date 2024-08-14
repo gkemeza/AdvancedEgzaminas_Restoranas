@@ -1,6 +1,7 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+using System.Globalization;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -20,6 +21,35 @@ namespace AdvancedEgzaminas_Restoranas.Services
             var receipt = new Receipt(order, "Restaurant");
             AddReceipt(receipt);
             return receipt;
+        }
+
+        public Receipt HandleClientReceipt(Order order)
+        {
+            var receipt = new Receipt(order, "Client");
+            AddReceipt(receipt);
+            return receipt;
+        }
+
+        public bool IsClientReceiptNeeded()
+        {
+            string choice;
+            do
+            {
+                Console.WriteLine("Print client receipt? (Y/N)");
+                choice = Console.ReadLine();
+            }
+            while (choice.ToLower() != "y" && choice.ToLower() != "n");
+
+            if (choice == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (choice.ToLower() == "y")
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void AddReceipt(Receipt receipt)
