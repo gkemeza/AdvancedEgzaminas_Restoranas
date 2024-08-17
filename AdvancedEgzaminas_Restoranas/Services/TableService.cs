@@ -55,10 +55,40 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public int ChooseTable()
         {
-            Console.Clear();
-            Console.WriteLine("Enter table number (1-10):");
-            // TODO: validate input
-            return int.Parse(Console.ReadLine());
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Enter table number (1-10):");
+                if (int.TryParse(Console.ReadLine(), out int tableNumber))
+                {
+                    if (tableNumber >= 1 && tableNumber <= _tables.Count)
+                    {
+                        if (IsTableAvailable(tableNumber))
+                        {
+                            return tableNumber;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Table {tableNumber} is taken!");
+                            Console.WriteLine("\nPress 'Enter' to continue...");
+                            Console.ReadLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Table {tableNumber} doesn't exist!");
+                        Console.WriteLine("\nPress 'Enter' to continue...");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Enter a whole number!");
+                    Console.WriteLine("\nPress 'Enter' to continue...");
+                    Console.ReadLine();
+                }
+            }
+
         }
 
         public Table? GetTable(int tableNumber)

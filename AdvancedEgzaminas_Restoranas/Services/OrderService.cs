@@ -54,8 +54,8 @@ namespace AdvancedEgzaminas_Restoranas.Services
                         {
                             products.Add(prod);
                         }
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();
+                        Console.WriteLine("\nPress 'Enter' to continue...");
+                        Console.ReadLine();
                         break;
                     case "2":
                         Service(tableNumber, products);
@@ -72,8 +72,8 @@ namespace AdvancedEgzaminas_Restoranas.Services
             Order order = CreateOrder(tableNumber, products);
             UpdateOrders(order);
             Console.WriteLine("\nOrder was created");
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
+            Console.WriteLine("\nPress 'Enter' to continue...");
+            Console.ReadLine();
         }
 
         private void UpdateOrders(Order order)

@@ -63,7 +63,6 @@ namespace AdvancedEgzaminas_Restoranas
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("Invalid choice!");
                     break;
             }
         }
@@ -71,18 +70,9 @@ namespace AdvancedEgzaminas_Restoranas
         private void BeginTable()
         {
             int number = _tableService.ChooseTable();
-            if (_tableService.IsTableAvailable(number))
-            {
-                _tableService.OccupyTable(number);
-                _tableService.UpdateTablesInFile();
-                _orderService.HandleOrderMenu(number);
-            }
-            else
-            {
-                Console.WriteLine("Table is taken!");
-                Console.WriteLine("\nPress any key to go back.");
-                Console.ReadKey();
-            }
+            _tableService.OccupyTable(number);
+            _tableService.UpdateTablesInFile();
+            _orderService.HandleOrderMenu(number);
         }
 
         private void ShowOpenTables()
@@ -113,14 +103,14 @@ namespace AdvancedEgzaminas_Restoranas
                 _orderService.EndOrder(tableNumber);
 
                 Console.WriteLine("Order was finished.");
-                Console.WriteLine("\nPress any key to go back.");
-                Console.ReadKey();
+                Console.WriteLine("\nPress 'Enter' to go back.");
+                Console.ReadLine();
             }
             else
             {
                 Console.WriteLine("Wrong table number!");
-                Console.WriteLine("\nPress any key to go back.");
-                Console.ReadKey();
+                Console.WriteLine("\nPress 'Enter' to go back.");
+                Console.ReadLine();
             }
         }
 
@@ -129,8 +119,8 @@ namespace AdvancedEgzaminas_Restoranas
             Console.Clear();
             _tableService.PrintTables();
 
-            Console.WriteLine("\nPress any key to go back.");
-            Console.ReadKey();
+            Console.WriteLine("\nPress 'Enter' to go back.");
+            Console.ReadLine();
         }
 
     }
