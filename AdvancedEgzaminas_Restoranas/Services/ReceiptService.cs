@@ -1,17 +1,20 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
     public class ReceiptService : IReceiptService
     {
         private readonly IDataAccess _dataAccess;
+        private readonly UserInterface _userInterface;
         private readonly string _receiptsFilePath;
 
-        public ReceiptService(IDataAccess dataAccess, string filePath)
+        public ReceiptService(IDataAccess dataAccess, UserInterface userInterface, string filePath)
         {
             _dataAccess = dataAccess;
+            _userInterface = userInterface;
             _receiptsFilePath = filePath;
         }
 
@@ -98,7 +101,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             Console.Clear();
             var receipts = GetAllReceipts();
             PromptAndPrintReceipts(receipts);
-
+            _userInterface.DisplayMessageAndWait(string.Empty);
             Console.WriteLine("\nPress 'Enter' to go back.");
             Console.ReadLine();
         }

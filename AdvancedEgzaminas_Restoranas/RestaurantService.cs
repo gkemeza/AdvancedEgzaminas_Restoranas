@@ -102,15 +102,11 @@ namespace AdvancedEgzaminas_Restoranas
 
                 _orderService.EndOrder(tableNumber);
 
-                Console.WriteLine("Order was finished.");
-                Console.WriteLine("\nPress 'Enter' to go back.");
-                Console.ReadLine();
+                _userInterface.DisplayMessageAndWait("Order was finished.");
             }
             else
             {
-                Console.WriteLine("Wrong table number!");
-                Console.WriteLine("\nPress 'Enter' to go back.");
-                Console.ReadLine();
+                _userInterface.DisplayMessageAndWait("Wrong table number!");
             }
         }
 
@@ -118,9 +114,7 @@ namespace AdvancedEgzaminas_Restoranas
         {
             Console.Clear();
             _tableService.PrintTables();
-
-            Console.WriteLine("\nPress 'Enter' to go back.");
-            Console.ReadLine();
+            _userInterface.DisplayMessageAndWait(string.Empty);
         }
 
     }

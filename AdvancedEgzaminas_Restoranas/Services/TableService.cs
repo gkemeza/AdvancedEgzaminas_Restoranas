@@ -1,6 +1,7 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -8,11 +9,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
     {
         private List<Table> _tables;
         private readonly IDataAccess _dataAccess;
+        private readonly UserInterface _userInterface;
         private readonly string _filePath;
 
-        public TableService(IDataAccess dataAccess, string filePath)
+        public TableService(IDataAccess dataAccess, UserInterface userInterface, string filePath)
         {
             _dataAccess = dataAccess;
+            _userInterface = userInterface;
             _filePath = filePath;
             _tables = _dataAccess.ReadCsv<Table>(_filePath);
         }
@@ -47,12 +50,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             }
         }
 
-        // Reload tables explicitly if needed
-        public void ReloadTables()
-        {
-            _tables = LoadTables();
-        }
-
         public int ChooseTable()
         {
             const int MinTableNumber = 1;
@@ -65,31 +62,24 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
                 if (!int.TryParse(Console.ReadLine(), out int tableNumber))
                 {
-                    ShowMessage("Enter a whole number!");
+                    _userInterface.DisplayMessageAndWait("Enter a whole number!");
                     continue;
                 }
 
                 if (tableNumber < MinTableNumber || tableNumber > MaxTableNumber)
                 {
-                    ShowMessage($"Table {tableNumber} doesn't exist!");
+                    _userInterface.DisplayMessageAndWait($"Table {tableNumber} doesn't exist!");
                     continue;
                 }
 
                 if (!IsTableAvailable(tableNumber))
                 {
-                    ShowMessage($"Table {tableNumber} is taken!");
+                    _userInterface.DisplayMessageAndWait($"Table {tableNumber} is taken!");
                     continue;
                 }
 
                 return tableNumber;
             }
-        }
-
-        private void ShowMessage(string message)
-        {
-            Console.WriteLine(message);
-            Console.WriteLine("\nPress 'Enter' to continue...");
-            Console.ReadLine();
         }
 
         public Table? GetTable(int tableNumber)

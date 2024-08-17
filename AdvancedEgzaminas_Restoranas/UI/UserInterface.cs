@@ -35,5 +35,12 @@
             }
             return result;
         }
+
+        public void DisplayMessageAndWait(string message)
+        {
+            Console.WriteLine(message);
+            Console.WriteLine("\nPress 'Enter' to continue...");
+            Console.ReadLine();
+        }
     }
 }
