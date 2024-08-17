@@ -42,7 +42,6 @@ namespace AdvancedEgzaminas_Restoranas
         private void CallChosenOptionMethod()
         {
             string option = Console.ReadLine();
-            // TODO: validate input
 
             switch (option)
             {

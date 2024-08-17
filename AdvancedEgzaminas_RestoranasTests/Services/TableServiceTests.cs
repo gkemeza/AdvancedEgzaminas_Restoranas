@@ -1,5 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
+using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services.Tests
 {
@@ -17,7 +18,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
                 new Table(2, 4, true),
             };
 
-            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+            _tableService = new TableService(new FakeDataAccess(testTables), new UserInterface(), "fakePath");
         }
 
         [TestMethod()]
@@ -54,7 +55,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         {
             // Arrange
             var testTables = new List<Table>();
-            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+            _tableService = new TableService(new FakeDataAccess(testTables), new UserInterface(), "fakePath");
             int tableNumber = 1;
 
             // Act 
@@ -183,7 +184,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         {
             // Arrange
             var testTables = new List<Table>();
-            _tableService = new TableService(new FakeDataAccess(testTables), "fakePath");
+            _tableService = new TableService(new FakeDataAccess(testTables), new UserInterface(), "fakePath");
             int tableNumber = 1;
 
             // Act
