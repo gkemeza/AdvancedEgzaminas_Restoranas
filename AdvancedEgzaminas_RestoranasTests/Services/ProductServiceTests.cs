@@ -10,12 +10,6 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     {
         private IProductService _productService;
 
-        [TestMethod()]
-        public void GetProductsTest()
-        {
-            Assert.Fail();
-        }
-
         [TestMethod]
         public void GetProducts_ReturnsCorrectProducts()
         {
@@ -47,6 +41,76 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             Assert.IsTrue(result.Any(p => p.Name == "Tea" && p is Drink));
             Assert.IsTrue(result.Any(p => p.Name == "Sandwich" && p is Food));
             Assert.IsTrue(result.Any(p => p.Name == "Cake" && p is Food));
+        }
+
+        [TestMethod]
+        public void GetProducts_EmptyFiles_ReturnsEmptyList()
+        {
+            // Arrange
+            var mockDataAccess = new MockDataAccess();
+            var drinksFilePath = "empty_drinks.csv";
+            var foodFilePath = "empty_food.csv";
+
+            mockDataAccess.FileContents[drinksFilePath] = new List<object>();
+            mockDataAccess.FileContents[foodFilePath] = new List<object>();
+
+            var productManager = new ProductService(mockDataAccess, drinksFilePath, foodFilePath);
+
+            // Act
+            var result = productManager.GetProducts();
+
+            // Assert
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void GetProducts_OnlyDrinks_ReturnsOnlyDrinks()
+        {
+            // Arrange
+            var mockDataAccess = new MockDataAccess();
+            var drinksFilePath = "drinks.csv";
+            var foodFilePath = "empty_food.csv";
+
+            mockDataAccess.FileContents[drinksFilePath] = new List<object>
+        {
+            new Drink { Name = "Coffee" },
+            new Drink { Name = "Tea" }
+        };
+            mockDataAccess.FileContents[foodFilePath] = new List<object>();
+
+            var productManager = new ProductService(mockDataAccess, drinksFilePath, foodFilePath);
+
+            // Act
+            var result = productManager.GetProducts();
+
+            // Assert
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.All(p => p is Drink));
+        }
+
+        [TestMethod]
+        public void GetProducts_OnlyFood_ReturnsOnlyFood()
+        {
+            // Arrange
+            var mockDataAccess = new MockDataAccess();
+            var drinksFilePath = "empty_drinks.csv";
+            var foodFilePath = "food.csv";
+
+            mockDataAccess.FileContents[drinksFilePath] = new List<object>();
+            mockDataAccess.FileContents[foodFilePath] = new List<object>
+        {
+            new Food { Name = "Sandwich" },
+            new Food { Name = "Cake" }
+        };
+
+            var productManager = new ProductService(mockDataAccess, drinksFilePath, foodFilePath);
+
+            // Act
+            var result = productManager.GetProducts();
+
+            // Assert
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.All(p => p is Food));
         }
 
         private class MockDataAccess : IDataAccess
