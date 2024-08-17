@@ -13,7 +13,7 @@ namespace AdvancedEgzaminas_Restoranas
         {
             IDataAccess dataAccess = new DataAccess.DataAccess();
             UserInterface userInterface = new UserInterface();
-            IReceiptService receiptService = new ReceiptService(dataAccess, @"..\..\..\Data\receipts.json");
+            IReceiptService receiptService = new ReceiptService(dataAccess, userInterface, @"..\..\..\Data\receipts.json");
             IProductService productService = new ProductService(
                 dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
             ITableService tableService = new TableService(
