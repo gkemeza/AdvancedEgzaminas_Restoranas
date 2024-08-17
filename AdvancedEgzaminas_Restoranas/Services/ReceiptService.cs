@@ -77,6 +77,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             Console.WriteLine($"***** {receiptType} Receipts *****\n");
             foreach (Receipt receipt in filteredReceipts)
             {
+                Console.WriteLine($"{receiptType} receipt:");
                 Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
 
                 Console.WriteLine("Check | Tbl | Opened | Amt Due");
