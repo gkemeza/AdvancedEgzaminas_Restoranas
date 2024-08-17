@@ -83,7 +83,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
 
                 Console.WriteLine($"Receipt Num. {receipt.Id}");
-                Console.WriteLine();
+                //Console.WriteLine();
                 Console.WriteLine(new string('-', 50));
                 Console.WriteLine();
             }
@@ -93,32 +93,43 @@ namespace AdvancedEgzaminas_Restoranas.Services
         {
             Console.Clear();
             var receipts = GetAllReceipts();
-            PromptAndPrintReceipts(receipts);
+            var chosenType = PromptForReceiptType();
+            PrintReceipts(receipts, chosenType);
             _userInterface.DisplayMessageAndWait(string.Empty);
         }
 
-        private void PromptAndPrintReceipts(List<Receipt> allReceipts)
+        private ReceiptType PromptForReceiptType()
         {
-            Console.WriteLine("Choose receipts type:");
-            foreach (ReceiptType type in Enum.GetValues(typeof(ReceiptType)))
-            {
-                Console.WriteLine($"- {type}");
-            }
+            var receiptTypes = Enum.GetValues(typeof(ReceiptType)).Cast<ReceiptType>().ToList();
 
             while (true)
             {
-                Console.Write("\nEnter your choice: ");
-                string userInput = Console.ReadLine();
+                Console.Clear();
+                PrintReceiptTypes(receiptTypes);
 
-                if (Enum.TryParse(userInput, true, out ReceiptType chosenType))
+                Console.WriteLine("\nEnter your choice: ");
+                if (!int.TryParse(Console.ReadLine(), out int number))
                 {
-                    PrintReceipts(allReceipts, chosenType);
-                    break;
+                    _userInterface.DisplayMessageAndWait("Enter a whole number!");
+                    continue;
                 }
-                else
+
+                if (number < 1 || number > 2)
                 {
-                    Console.WriteLine("Invalid receipt type!");
+                    _userInterface.DisplayMessageAndWait($"Receipt type {number} doesn't exist!");
+                    continue;
                 }
+
+                return receiptTypes[number - 1];
+            }
+        }
+
+        private void PrintReceiptTypes(List<ReceiptType> receiptTypes)
+        {
+            Console.WriteLine("Receipt types:");
+            for (int i = 0; i < receiptTypes.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {receiptTypes[i]}");
             }
         }
 
