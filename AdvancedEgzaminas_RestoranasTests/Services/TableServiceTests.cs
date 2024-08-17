@@ -268,36 +268,35 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             _tableService.OccupyTable(tableNumber);
         }
 
-    }
-
-    public class FakeDataAccess : IDataAccess
-    {
-        private readonly List<Table> _testTables;
-
-        public FakeDataAccess(List<Table> testTables)
+        private class FakeDataAccess : IDataAccess
         {
-            _testTables = testTables;
-        }
+            private readonly List<Table> _testTables;
 
-        public List<T> ReadCsv<T>(string filePath)
-        {
-            // Simulate reading from a file by returning the in-memory list
-            return _testTables.Cast<T>().ToList();
-        }
+            public FakeDataAccess(List<Table> testTables)
+            {
+                _testTables = testTables;
+            }
 
-        public List<T> ReadJson<T>(string filePath)
-        {
-            throw new NotImplementedException();
-        }
+            public List<T> ReadCsv<T>(string filePath)
+            {
+                // Simulate reading from a file by returning the in-memory list
+                return _testTables.Cast<T>().ToList();
+            }
 
-        public void WriteCsv<T>(string filePath, List<T> data)
-        {
-            throw new NotImplementedException();
-        }
+            public List<T> ReadJson<T>(string filePath)
+            {
+                throw new NotImplementedException();
+            }
 
-        public void WriteJson<T>(string filePath, List<T> data)
-        {
-            throw new NotImplementedException();
+            public void WriteCsv<T>(string filePath, List<T> data)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void WriteJson<T>(string filePath, List<T> data)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
