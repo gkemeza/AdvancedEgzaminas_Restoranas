@@ -55,40 +55,41 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public int ChooseTable()
         {
+            const int MinTableNumber = 1;
+            const int MaxTableNumber = 10;
+
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Enter table number (1-10):");
-                if (int.TryParse(Console.ReadLine(), out int tableNumber))
-                {
-                    if (tableNumber >= 1 && tableNumber <= _tables.Count)
-                    {
-                        if (IsTableAvailable(tableNumber))
-                        {
-                            return tableNumber;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Table {tableNumber} is taken!");
-                            Console.WriteLine("\nPress 'Enter' to continue...");
-                            Console.ReadLine();
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Table {tableNumber} doesn't exist!");
-                        Console.WriteLine("\nPress 'Enter' to continue...");
-                        Console.ReadLine();
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Enter a whole number!");
-                    Console.WriteLine("\nPress 'Enter' to continue...");
-                    Console.ReadLine();
-                }
-            }
+                Console.WriteLine($"Enter table number ({MinTableNumber}-{MaxTableNumber}):");
 
+                if (!int.TryParse(Console.ReadLine(), out int tableNumber))
+                {
+                    ShowMessage("Enter a whole number!");
+                    continue;
+                }
+
+                if (tableNumber < MinTableNumber || tableNumber > MaxTableNumber)
+                {
+                    ShowMessage($"Table {tableNumber} doesn't exist!");
+                    continue;
+                }
+
+                if (!IsTableAvailable(tableNumber))
+                {
+                    ShowMessage($"Table {tableNumber} is taken!");
+                    continue;
+                }
+
+                return tableNumber;
+            }
+        }
+
+        private void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+            Console.WriteLine("\nPress 'Enter' to continue...");
+            Console.ReadLine();
         }
 
         public Table? GetTable(int tableNumber)
