@@ -37,21 +37,14 @@ namespace AdvancedEgzaminas_Restoranas.Services
             string choice;
             do
             {
+                Console.Clear();
                 Console.WriteLine("Print client receipt? (Y/N)");
                 choice = Console.ReadLine();
             }
-            while (choice.ToLower() != "y" && choice.ToLower() != "n");
+            while (!choice.Equals("y", StringComparison.OrdinalIgnoreCase) &&
+                    !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
 
-            if (choice == null)
-            {
-                throw new NullReferenceException();
-            }
-            if (choice.ToLower() == "y")
-            {
-                return true;
-            }
-
-            return false;
+            return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
         }
 
         private void AddReceipt(Receipt receipt)
@@ -139,24 +132,18 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private bool IsEmailSendNeeded()
         {
+
             string choice;
             do
             {
+                Console.Clear();
                 Console.WriteLine("Send receipt(s) to email? (Y/N)");
                 choice = Console.ReadLine();
             }
-            while (choice.ToLower() != "y" && choice.ToLower() != "n");
+            while (!choice.Equals("y", StringComparison.OrdinalIgnoreCase) &&
+                   !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
 
-            if (choice == null)
-            {
-                throw new NullReferenceException();
-            }
-            if (choice.ToLower() == "y")
-            {
-                return true;
-            }
-
-            return false;
+            return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
