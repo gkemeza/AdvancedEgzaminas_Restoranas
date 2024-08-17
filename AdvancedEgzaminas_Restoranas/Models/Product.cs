@@ -7,11 +7,5 @@
         public abstract string Type { get; }
 
         public Product() { }
-
-        //protected Product(string name, decimal price)
-        //{
-        //    Name = name;
-        //    Price = price;
-        //}
     }
 }

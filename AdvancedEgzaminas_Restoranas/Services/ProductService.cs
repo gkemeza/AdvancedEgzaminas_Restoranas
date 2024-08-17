@@ -1,6 +1,7 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
+using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -8,17 +9,19 @@ namespace AdvancedEgzaminas_Restoranas.Services
     {
         private List<Product> _products;
         private readonly IDataAccess _dataAccess;
+        private readonly UserInterface _userInterface;
         private readonly string _drinksFilePath;
         private readonly string _foodFilePath;
 
-        public ProductService(IDataAccess dataAccess, string drinksFilePath, string foodFilePath)
+        public ProductService(IDataAccess dataAccess, UserInterface userInterface, string drinksFilePath, string foodFilePath)
         {
             _dataAccess = dataAccess;
+            _userInterface = userInterface;
             _drinksFilePath = drinksFilePath;
             _foodFilePath = foodFilePath;
         }
 
-        public List<Product> GetProducts()
+        private List<Product> GetProducts()
         {
             _products = GetDrinks(_drinksFilePath);
             _products.AddRange(GetFood(_foodFilePath));
@@ -38,54 +41,8 @@ namespace AdvancedEgzaminas_Restoranas.Services
         public Product AddProduct()
         {
             var allProducts = GetProducts();
-            DisplayProductsMenu(allProducts);
-            return ChooseProduct(allProducts);
-        }
-
-        private Product ChooseProduct(List<Product> products)
-        {
-            string chosenName = PromptForProductName();
-
-            Product? product = null;
-            if (products.Any(p => string.Equals(p.Name, chosenName, StringComparison.OrdinalIgnoreCase)))
-            {
-                product = products.FirstOrDefault(p => string.Equals(p.Name, chosenName, StringComparison.OrdinalIgnoreCase));
-                Console.WriteLine($"{product.Name} was addded to the order");
-            }
-            else
-            {
-                Console.WriteLine("Wrong name!");
-            }
-            return product;
-        }
-
-        private string PromptForProductName()
-        {
-            Console.WriteLine("Enter product name:");
-            return Console.ReadLine();
-        }
-
-
-        private void DisplayProductsMenu(List<Product> products)
-        {
-            var menuItems = GetProducts();
-
-            if (menuItems.Count == 0)
-            {
-                Console.WriteLine("No food items found.");
-                return;
-            }
-
-            Console.Clear();
-            Console.WriteLine("***** Menu *****");
-            Console.WriteLine("ID | Name | Price");
-            Console.WriteLine("-----------------");
-
-            int i = 1;
-            foreach (var item in menuItems)
-            {
-                Console.WriteLine($"{i++} | {item.Name} | ${item.Price:F2}");
-            }
+            _userInterface.DisplayProductsMenu(allProducts);
+            return _userInterface.ChooseProduct(allProducts);
         }
 
         public void SeedDrinks()
