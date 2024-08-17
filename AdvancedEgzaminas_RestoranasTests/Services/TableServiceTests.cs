@@ -1,5 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
+using AdvancedEgzaminas_Restoranas.Services.Interfaces;
 using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services.Tests
@@ -7,7 +8,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     [TestClass()]
     public class TableServiceTests
     {
-        private TableService _tableService;
+        private ITableService _tableService;
 
         [TestInitialize()]
         public void Setup()

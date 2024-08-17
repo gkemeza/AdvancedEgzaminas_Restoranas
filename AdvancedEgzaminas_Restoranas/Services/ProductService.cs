@@ -18,10 +18,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _foodFilePath = foodFilePath;
         }
 
-        public List<Product> GetProducts(string drinksFilePath, string foodFilePath)
+        public List<Product> GetProducts()
         {
-            _products = GetDrinks(drinksFilePath);
-            _products.AddRange(GetFood(foodFilePath));
+            _products = GetDrinks(_drinksFilePath);
+            _products.AddRange(GetFood(_foodFilePath));
             return _products;
         }
 
@@ -37,7 +37,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public Product AddProduct()
         {
-            var allProducts = GetProducts(_drinksFilePath, _foodFilePath);
+            var allProducts = GetProducts();
             DisplayProductsMenu(allProducts);
             return ChooseProduct(allProducts);
         }
@@ -68,7 +68,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         private void DisplayProductsMenu(List<Product> products)
         {
-            var menuItems = GetProducts(_drinksFilePath, _foodFilePath);
+            var menuItems = GetProducts();
 
             if (menuItems.Count == 0)
             {
