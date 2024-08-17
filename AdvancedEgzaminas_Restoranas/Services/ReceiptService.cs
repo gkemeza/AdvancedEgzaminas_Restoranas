@@ -102,8 +102,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             var receipts = GetAllReceipts();
             PromptAndPrintReceipts(receipts);
             _userInterface.DisplayMessageAndWait(string.Empty);
-            Console.WriteLine("\nPress 'Enter' to go back.");
-            Console.ReadLine();
         }
 
         private void PromptAndPrintReceipts(List<Receipt> allReceipts)
