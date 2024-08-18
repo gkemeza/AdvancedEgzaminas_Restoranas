@@ -15,7 +15,7 @@ namespace AdvancedEgzaminas_Restoranas
             UserInterface userInterface = new UserInterface();
             IReceiptService receiptService = new ReceiptService(dataAccess, userInterface, @"..\..\..\Data\receipts.json");
             IProductService productService = new ProductService(
-                dataAccess, userInterface, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
+                dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
             ITableService tableService = new TableService(
                 dataAccess, userInterface, @"..\..\..\Data\tables.csv");
             IOrderService orderService = new OrderService(

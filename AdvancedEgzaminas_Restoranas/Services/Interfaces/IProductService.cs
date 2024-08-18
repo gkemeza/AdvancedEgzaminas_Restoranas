@@ -4,7 +4,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
 {
     public interface IProductService
     {
-        Product AddProduct();
+        List<Product> GetProducts();
         void SeedDrinks();
         void SeedFood();
     }

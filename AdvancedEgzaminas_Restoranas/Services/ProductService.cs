@@ -1,7 +1,6 @@
 ﻿using AdvancedEgzaminas_Restoranas.DataAccess;
 using AdvancedEgzaminas_Restoranas.Models;
 using AdvancedEgzaminas_Restoranas.Services.Interfaces;
-using AdvancedEgzaminas_Restoranas.UI;
 
 namespace AdvancedEgzaminas_Restoranas.Services
 {
@@ -9,19 +8,17 @@ namespace AdvancedEgzaminas_Restoranas.Services
     {
         private List<Product> _products;
         private readonly IDataAccess _dataAccess;
-        private readonly UserInterface _userInterface;
         private readonly string _drinksFilePath;
         private readonly string _foodFilePath;
 
-        public ProductService(IDataAccess dataAccess, UserInterface userInterface, string drinksFilePath, string foodFilePath)
+        public ProductService(IDataAccess dataAccess, string drinksFilePath, string foodFilePath)
         {
             _dataAccess = dataAccess;
-            _userInterface = userInterface;
             _drinksFilePath = drinksFilePath;
             _foodFilePath = foodFilePath;
         }
 
-        private List<Product> GetProducts()
+        public List<Product> GetProducts()
         {
             _products = GetDrinks(_drinksFilePath);
             _products.AddRange(GetFood(_foodFilePath));
@@ -36,13 +33,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private List<Product> GetFood(string filePath)
         {
             return _dataAccess.ReadCsv<Food>(filePath).Cast<Product>().ToList();
-        }
-
-        public Product AddProduct()
-        {
-            var allProducts = GetProducts();
-            _userInterface.DisplayProductsMenu(allProducts);
-            return _userInterface.ChooseProduct(allProducts);
         }
 
         public void SeedDrinks()

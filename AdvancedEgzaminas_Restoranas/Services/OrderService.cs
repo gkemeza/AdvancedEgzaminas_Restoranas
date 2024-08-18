@@ -49,10 +49,13 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 switch (option)
                 {
                     case "1":
-                        var prod = _productService.AddProduct();
-                        if (prod != null)
+                        var allProducts = _productService.GetProducts();
+                        _userInterface.DisplayProductsMenu(allProducts);
+                        var product = _userInterface.ChooseProduct(allProducts);
+
+                        if (product != null)
                         {
-                            products.Add(prod);
+                            products.Add(product);
                         }
                         _userInterface.DisplayMessageAndWait(string.Empty);
                         break;
