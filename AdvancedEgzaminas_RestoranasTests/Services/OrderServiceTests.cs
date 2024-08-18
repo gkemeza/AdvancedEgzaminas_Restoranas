@@ -9,12 +9,12 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     public class OrderServiceTests
     {
         private IOrderService _orderService;
-        private FakeDataAccess _fakeDataAccess;
+        private FakeDataAccess<Order> _fakeDataAccess;
 
         [TestInitialize()]
         public void Setup()
         {
-            _fakeDataAccess = new FakeDataAccess();
+            _fakeDataAccess = new FakeDataAccess<Order>();
             _orderService = new OrderService(
                 _fakeDataAccess,
                 new FakeTableService(),
@@ -93,7 +93,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             // Arrange
             int tableNumber = 1;
             var expectedOrder = new Order(new Table(tableNumber, 4), new List<Product>(), 100m, DateTime.Now);
-            _fakeDataAccess.SetTestOrders(new List<Order> { expectedOrder });
+            _fakeDataAccess.SetTestData(new List<Order> { expectedOrder });
 
             // Act
             var result = _orderService.GetOrder(tableNumber);
@@ -114,7 +114,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
                 new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now),
                 new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now)
             };
-            _fakeDataAccess.SetTestOrders(testOrders);
+            _fakeDataAccess.SetTestData(testOrders);
 
             // Act
             var result = _orderService.GetOrder(tableNumber);
@@ -127,7 +127,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetOrder_EmptyOrderList_ReturnsNull()
         {
             // Arrange
-            _fakeDataAccess.SetTestOrders(new List<Order>());
+            _fakeDataAccess.SetTestData(new List<Order>());
 
             // Act
             var result = _orderService.GetOrder(1);
@@ -156,7 +156,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
                 new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now),
                 new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now)
             };
-            _fakeDataAccess.SetTestOrders(expectedOrders);
+            _fakeDataAccess.SetTestData(expectedOrders);
 
             // Act
             var result = _orderService.GetOrders();
@@ -171,7 +171,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void GetOrders_EmptyList_ReturnsEmptyList()
         {
             // Arrange
-            _fakeDataAccess.SetTestOrders(new List<Order>());
+            _fakeDataAccess.SetTestData(new List<Order>());
 
             // Act
             var result = _orderService.GetOrders();
@@ -193,16 +193,16 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         }
     }
 
-    public class FakeDataAccess : IDataAccess
+    public class FakeDataAccess<T> : IDataAccess
     {
-        private List<Order> _testOrders;
+        private List<T> _testData;
         public bool ShouldThrowException { get; set; }
         public bool WasAddReceiptCalled { get; private set; }
         public bool ShouldThrowExceptionOnAddReceipt { get; set; }
 
-        public void SetTestOrders(List<Order> orders)
+        public void SetTestData(List<T> data)
         {
-            _testOrders = orders;
+            _testData = data;
         }
 
         public List<T> ReadJson<T>(string filePath)
@@ -211,7 +211,7 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             {
                 throw new Exception("Simulated data access error");
             }
-            return _testOrders as List<T>;
+            return _testData as List<T>;
         }
 
         public List<T> ReadCsv<T>(string filePath)

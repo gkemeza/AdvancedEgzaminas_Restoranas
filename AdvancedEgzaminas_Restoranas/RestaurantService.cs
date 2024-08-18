@@ -93,7 +93,7 @@ namespace AdvancedEgzaminas_Restoranas
             if (order != null)
             {
                 _receiptService.HandleRestaurantReceipt(order);
-                if (_receiptService.IsClientReceiptNeeded())
+                if (_userInterface.IsClientReceiptNeeded())
                 {
                     _receiptService.HandleClientReceipt(order);
                 }

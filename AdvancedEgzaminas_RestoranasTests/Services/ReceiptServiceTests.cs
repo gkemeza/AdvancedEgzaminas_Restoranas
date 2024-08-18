@@ -8,12 +8,12 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     public class ReceiptServiceTests
     {
         private IReceiptService _receiptService;
-        private FakeDataAccess _fakeDataAccess;
+        private FakeDataAccess<Receipt> _fakeDataAccess;
 
         [TestInitialize()]
         public void Setup()
         {
-            _fakeDataAccess = new FakeDataAccess();
+            _fakeDataAccess = new FakeDataAccess<Receipt>();
             _receiptService = new ReceiptService(
                 _fakeDataAccess,
                 new UserInterface(),
@@ -66,6 +66,53 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         {
             // Act
             _receiptService.HandleClientReceipt(null);
+        }
+
+        [TestMethod]
+        public void GetAllReceipts_ReturnsAllOrders()
+        {
+            // Arrange
+            var order = new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now);
+            var order2 = new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now);
+            var expectedReceipts = new List<Receipt>
+            {
+                new Receipt(order, ReceiptType.Restaurant),
+                new Receipt(order2, ReceiptType.Client),
+            };
+            _fakeDataAccess.SetTestData(expectedReceipts);
+
+            // Act
+            var result = _receiptService.GetAllReceipts();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedReceipts.Count, result.Count);
+            CollectionAssert.AreEqual(expectedReceipts, result);
+        }
+
+        [TestMethod]
+        public void GetAllReceipts_EmptyList_ReturnsEmptyList()
+        {
+            // Arrange
+            _fakeDataAccess.SetTestData(new List<Receipt>());
+
+            // Act
+            var result = _receiptService.GetAllReceipts();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GetAllReceipts_DataAccessThrowsException_PropagatesException()
+        {
+            // Arrange
+            _fakeDataAccess.ShouldThrowException = true;
+
+            // Act
+            _receiptService.GetAllReceipts();
         }
 
         private Order CreateSampleOrder()

@@ -42,21 +42,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             return receipt;
         }
 
-        public bool IsClientReceiptNeeded()
-        {
-            string choice;
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("Print client receipt? (Y/N)");
-                choice = Console.ReadLine();
-            }
-            while (!choice.Equals("y", StringComparison.OrdinalIgnoreCase) &&
-                    !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
-
-            return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
-        }
-
         public List<Receipt> GetAllReceipts()
         {
             return _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
