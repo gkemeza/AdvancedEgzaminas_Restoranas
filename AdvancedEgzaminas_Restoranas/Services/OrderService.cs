@@ -25,12 +25,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
         public Order CreateOrder(int tableNumber, List<Product> products)
         {
             Table table = _tableService.GetTable(tableNumber);
-
-            decimal totalPrice = 0;
-            foreach (var product in products)
-            {
-                totalPrice += product.Price;
-            }
+            decimal totalPrice = products.Sum(p => p.Price);
 
             return new Order(table, products, totalPrice, DateTime.Now);
         }
