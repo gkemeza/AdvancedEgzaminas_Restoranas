@@ -106,5 +106,34 @@ namespace AdvancedEgzaminas_Restoranas.UI
             return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
         }
 
+        public void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType)
+        {
+            Console.Clear();
+            Random rand = new Random();
+            var filteredReceipts = receipts.Where(r => r.Type == receiptType).ToList();
+
+            if (filteredReceipts.Count == 0)
+            {
+                Console.WriteLine("No receipts found.");
+                return;
+            }
+            Console.WriteLine($"***** {receiptType} Receipts *****\n");
+            foreach (Receipt receipt in filteredReceipts)
+            {
+                Console.WriteLine($"{receiptType} receipt:");
+                Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
+
+                Console.WriteLine("Check | Tbl | Opened | Amt Due");
+                Console.WriteLine(new string('-', 36));
+
+                Console.WriteLine($"{rand.Next(100, 1000)} | {receipt.Order.Table.Number} | " +
+                    $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
+
+                Console.WriteLine($"Receipt Num. {receipt.Id}");
+                Console.WriteLine(new string('-', 50));
+                Console.WriteLine();
+            }
+        }
+
     }
 }

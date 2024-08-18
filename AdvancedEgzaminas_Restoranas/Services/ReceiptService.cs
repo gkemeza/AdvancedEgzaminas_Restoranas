@@ -47,42 +47,12 @@ namespace AdvancedEgzaminas_Restoranas.Services
             return _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
         }
 
-        public void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType)
-        {
-            Console.Clear();
-            Random rand = new Random();
-            var filteredReceipts = receipts.Where(r => r.Type == receiptType).ToList();
-
-            if (filteredReceipts.Count == 0)
-            {
-                Console.WriteLine("No receipts found.");
-                return;
-            }
-            Console.WriteLine($"***** {receiptType} Receipts *****\n");
-            foreach (Receipt receipt in filteredReceipts)
-            {
-                Console.WriteLine($"{receiptType} receipt:");
-                Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
-
-                Console.WriteLine("Check | Tbl | Opened | Amt Due");
-                Console.WriteLine(new string('-', 36));
-
-                Console.WriteLine($"{rand.Next(100, 1000)} | {receipt.Order.Table.Number} | " +
-                    $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
-
-                Console.WriteLine($"Receipt Num. {receipt.Id}");
-                //Console.WriteLine();
-                Console.WriteLine(new string('-', 50));
-                Console.WriteLine();
-            }
-        }
-
         public void ShowReceipts()
         {
             Console.Clear();
             var receipts = GetAllReceipts();
             var chosenType = PromptForReceiptType();
-            PrintReceipts(receipts, chosenType);
+            _userInterface.PrintReceipts(receipts, chosenType);
             _userInterface.DisplayMessageAndWait(string.Empty);
         }
 
