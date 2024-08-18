@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using AdvancedEgzaminas_Restoranas.Models;
+using CsvHelper;
 using System.Globalization;
 using System.Text.Json;
 
@@ -77,6 +78,13 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess
         {
             var lines = data.Select(item => JsonSerializer.Serialize(item));
             File.WriteAllLines(filePath, lines);
+        }
+
+        public void AddReceipt(Receipt receipt, string filePath)
+        {
+            var receipts = ReadJson<Receipt>(filePath);
+            receipts.Add(receipt);
+            WriteJson<Receipt>(filePath, receipts);
         }
 
         private JsonSerializerOptions GetJsonSerializerOptions()

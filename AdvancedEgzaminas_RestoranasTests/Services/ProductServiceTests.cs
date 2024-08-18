@@ -113,6 +113,11 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         {
             public Dictionary<string, List<object>> FileContents { get; } = new Dictionary<string, List<object>>();
 
+            public void AddReceipt(Receipt receipt, string filePath)
+            {
+                throw new NotImplementedException();
+            }
+
             public List<T> ReadCsv<T>(string filePath)
             {
                 if (FileContents.TryGetValue(filePath, out var contents))

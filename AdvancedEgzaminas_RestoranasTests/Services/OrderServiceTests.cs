@@ -197,6 +197,8 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     {
         private List<Order> _testOrders;
         public bool ShouldThrowException { get; set; }
+        public bool WasAddReceiptCalled { get; private set; }
+        public bool ShouldThrowExceptionOnAddReceipt { get; set; }
 
         public void SetTestOrders(List<Order> orders)
         {
@@ -225,6 +227,15 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
         public void WriteJson<T>(string filePath, List<T> data)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddReceipt(Receipt receipt, string filePath)
+        {
+            WasAddReceiptCalled = true;
+            if (ShouldThrowExceptionOnAddReceipt)
+            {
+                throw new Exception("Simulated error adding receipt");
+            }
         }
     }
 

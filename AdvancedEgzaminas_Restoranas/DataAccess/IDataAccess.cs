@@ -1,4 +1,6 @@
-﻿namespace AdvancedEgzaminas_Restoranas.DataAccess
+﻿using AdvancedEgzaminas_Restoranas.Models;
+
+namespace AdvancedEgzaminas_Restoranas.DataAccess
 {
     public interface IDataAccess
     {
@@ -7,5 +9,6 @@
 
         public List<T> ReadJson<T>(string filePath);
         void WriteJson<T>(string filePath, List<T> data);
+        void AddReceipt(Receipt receipt, string filePath);
     }
 }

@@ -277,6 +277,11 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
                 _testTables = testTables;
             }
 
+            public void AddReceipt(Receipt receipt, string filePath)
+            {
+                throw new NotImplementedException();
+            }
+
             public List<T> ReadCsv<T>(string filePath)
             {
                 // Simulate reading from a file by returning the in-memory list

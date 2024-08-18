@@ -20,15 +20,25 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public Receipt HandleRestaurantReceipt(Order order)
         {
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
+            }
+
             var receipt = new Receipt(order, ReceiptType.Restaurant);
-            AddReceipt(receipt);
+            _dataAccess.AddReceipt(receipt, _receiptsFilePath);
             return receipt;
         }
 
         public Receipt HandleClientReceipt(Order order)
         {
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
+            }
+
             var receipt = new Receipt(order, ReceiptType.Client);
-            AddReceipt(receipt);
+            _dataAccess.AddReceipt(receipt, _receiptsFilePath);
             return receipt;
         }
 
@@ -45,13 +55,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
 
             return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
-        }
-
-        private void AddReceipt(Receipt receipt)
-        {
-            var receipts = _dataAccess.ReadJson<Receipt>(_receiptsFilePath);
-            receipts.Add(receipt);
-            _dataAccess.WriteJson<Receipt>(_receiptsFilePath, receipts);
         }
 
         public List<Receipt> GetAllReceipts()
