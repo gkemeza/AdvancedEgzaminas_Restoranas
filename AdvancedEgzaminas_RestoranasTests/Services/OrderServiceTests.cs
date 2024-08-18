@@ -146,6 +146,51 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             // Act
             _orderService.GetOrder(1);
         }
+
+        [TestMethod]
+        public void GetOrders_ReturnsAllOrders()
+        {
+            // Arrange
+            var expectedOrders = new List<Order>
+            {
+                new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now),
+                new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now)
+            };
+            _fakeDataAccess.SetTestOrders(expectedOrders);
+
+            // Act
+            var result = _orderService.GetOrders();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedOrders.Count, result.Count);
+            CollectionAssert.AreEqual(expectedOrders, result);
+        }
+
+        [TestMethod]
+        public void GetOrders_EmptyList_ReturnsEmptyList()
+        {
+            // Arrange
+            _fakeDataAccess.SetTestOrders(new List<Order>());
+
+            // Act
+            var result = _orderService.GetOrders();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GetOrders_DataAccessThrowsException_PropagatesException()
+        {
+            // Arrange
+            _fakeDataAccess.ShouldThrowException = true;
+
+            // Act
+            _orderService.GetOrders();
+        }
     }
 
     public class FakeDataAccess : IDataAccess
