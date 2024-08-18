@@ -55,20 +55,15 @@ namespace AdvancedEgzaminas_Restoranas.Services
                         _userInterface.DisplayMessageAndWait(string.Empty);
                         break;
                     case "2":
-                        Service(tableNumber, products);
+                        Order order = CreateOrder(tableNumber, products);
+                        UpdateOrders(order);
+                        _userInterface.DisplayMessageAndWait("\nOrder was created");
                         break;
                     default:
                         Console.WriteLine("Invalid choice!");
                         break;
                 }
             }
-        }
-
-        public void Service(int tableNumber, List<Product> products)
-        {
-            Order order = CreateOrder(tableNumber, products);
-            UpdateOrders(order);
-            _userInterface.DisplayMessageAndWait("\nOrder was created");
         }
 
         private void UpdateOrders(Order order)
