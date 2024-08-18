@@ -87,11 +87,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             return _tables.FirstOrDefault(t => t.Number == tableNumber);
         }
 
-        public bool AreFreeTables()
-        {
-            return _tables.Any(t => !t.IsOccupied);
-        }
-
         public bool IsTableAvailable(int tableNumber)
         {
             return _tables.Any(t => t.Number == tableNumber && !t.IsOccupied);
