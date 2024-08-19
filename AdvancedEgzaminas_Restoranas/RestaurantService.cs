@@ -27,9 +27,9 @@ namespace AdvancedEgzaminas_Restoranas
 
         public void Run()
         {
-            //_productService.SeedDrinks();
-            //_productService.SeedFood();
-            //_tableService.SeedTables();
+            _productService.SeedDrinks();
+            _productService.SeedFood();
+            _tableService.SeedTables();
 
             while (true)
             {
