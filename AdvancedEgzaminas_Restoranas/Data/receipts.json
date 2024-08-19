@@ -1,3 +1,54 @@
-{"Order":{"ID":"1fd4ed67-4d9e-4326-89f4-17f4e37127ba","Table":{"Number":1,"Seats":2,"IsOccupied":true},"Products":[{"Name":"Arbata","Price":3.5,"Type":"Drink"},{"Name":"Kepta duona","Price":6,"Type":"Food"},{"Name":"Balandeliai","Price":12,"Type":"Food"}],"TotalAmount":21.5,"OrderTime":"2024-08-19T17:21:08.8225063+03:00"},"Id":"dd8e048a-9bfa-4169-b1df-ae5a17c88c60","Type":0}
-{"Order":{"ID":"1fd4ed67-4d9e-4326-89f4-17f4e37127ba","Table":{"Number":1,"Seats":2,"IsOccupied":true},"Products":[{"Name":"Arbata","Price":3.5,"Type":"Drink"},{"Name":"Kepta duona","Price":6,"Type":"Food"},{"Name":"Balandeliai","Price":12,"Type":"Food"}],"TotalAmount":21.5,"OrderTime":"2024-08-19T17:21:08.8225063+03:00"},"Id":"4e1d97fb-0a9f-4b89-bd7b-fbe24d57cf54","Type":1}
-{"Order":{"ID":"8ceaf35e-f6d0-4ab7-b740-e7e48b310672","Table":{"Number":1,"Seats":2,"IsOccupied":true},"Products":[{"Name":"Juoda kava","Price":2.5,"Type":"Drink"}],"TotalAmount":2.5,"OrderTime":"2024-08-19T17:23:19.0966498+03:00"},"Id":"b6850300-60da-4499-9e79-abeb9a5b0474","Type":0}
+[
+  {
+    "Order": {
+      "ID": "a5d4fd98-4c38-44de-a129-86bf78863324",
+      "Table": {
+        "Number": 1,
+        "Seats": 2,
+        "IsOccupied": true
+      },
+      "Products": [
+        {
+          "Name": "Juoda kava",
+          "Price": 2.5,
+          "Type": "Drink"
+        },
+        {
+          "Name": "Aperol Spritz",
+          "Price": 12,
+          "Type": "Drink"
+        }
+      ],
+      "TotalAmount": 14.5,
+      "OrderTime": "2024-08-19T21:32:05.3358044+03:00"
+    },
+    "Id": "70c6e521-0c57-4ed4-8e4f-b51edd8ecbdc",
+    "Type": 0
+  },
+  {
+    "Order": {
+      "ID": "a5d4fd98-4c38-44de-a129-86bf78863324",
+      "Table": {
+        "Number": 1,
+        "Seats": 2,
+        "IsOccupied": true
+      },
+      "Products": [
+        {
+          "Name": "Juoda kava",
+          "Price": 2.5,
+          "Type": "Drink"
+        },
+        {
+          "Name": "Aperol Spritz",
+          "Price": 12,
+          "Type": "Drink"
+        }
+      ],
+      "TotalAmount": 14.5,
+      "OrderTime": "2024-08-19T21:32:05.3358044+03:00"
+    },
+    "Id": "677b66fb-8230-4971-8ff1-37fa5d8675ad",
+    "Type": 1
+  }
+]

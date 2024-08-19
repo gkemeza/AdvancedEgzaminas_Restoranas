@@ -1,1 +1,46 @@
-{"ID":"28a11b5f-75fd-407c-9577-d131cf189b74","Table":{"Number":2,"Seats":2,"IsOccupied":true},"Products":[],"TotalAmount":0,"OrderTime":"2024-08-19T17:21:33.1954592+03:00"}
+[
+  {
+    "ID": "c5e8a98b-7763-480e-b652-ca36d568d1e7",
+    "Table": {
+      "Number": 2,
+      "Seats": 2,
+      "IsOccupied": true
+    },
+    "Products": [
+      {
+        "Name": "Espresso",
+        "Price": 2,
+        "Type": "Drink"
+      },
+      {
+        "Name": "Arbata",
+        "Price": 3.5,
+        "Type": "Drink"
+      }
+    ],
+    "TotalAmount": 5.5,
+    "OrderTime": "2024-08-19T21:32:25.661069+03:00"
+  },
+  {
+    "ID": "0b7e73f7-02bf-4991-9aa7-830bd3ad3e56",
+    "Table": {
+      "Number": 5,
+      "Seats": 4,
+      "IsOccupied": true
+    },
+    "Products": [
+      {
+        "Name": "Kepta duona",
+        "Price": 6,
+        "Type": "Food"
+      },
+      {
+        "Name": "Saltibarsciai",
+        "Price": 6,
+        "Type": "Food"
+      }
+    ],
+    "TotalAmount": 12,
+    "OrderTime": "2024-08-19T21:35:11.7270467+03:00"
+  }
+]

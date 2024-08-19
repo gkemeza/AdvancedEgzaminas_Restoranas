@@ -48,22 +48,26 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess
             {
                 if (File.Exists(filePath))
                 {
-                    string[] lines = File.ReadAllLines(filePath);
-                    foreach (string line in lines)
-                    {
-                        if (!string.IsNullOrWhiteSpace(line))
-                        {
-                            try
-                            {
-                                var order = JsonSerializer.Deserialize<T>(line, GetJsonSerializerOptions());
-                                items.Add(order);
-                            }
-                            catch (JsonException e)
-                            {
-                                Console.WriteLine($"Deserialization error for line '{line}': {e.Message}");
-                            }
-                        }
-                    }
+                    //string[] lines = File.ReadAllLines(filePath);
+                    //foreach (string line in lines)
+                    //{
+                    //    if (!string.IsNullOrWhiteSpace(line))
+                    //    {
+                    //        try
+                    //        {
+                    //            var order = JsonSerializer.Deserialize<T>(line, GetJsonSerializerOptions());
+                    //            items.Add(order);
+                    //        }
+                    //        catch (JsonException e)
+                    //        {
+                    //            Console.WriteLine($"Deserialization error for line '{line}': {e.Message}");
+                    //        }
+                    //    }
+                    //}
+
+                    string text = File.ReadAllText(filePath);
+                    var orders = JsonSerializer.Deserialize<List<T>>(text, GetJsonSerializerOptions());
+                    items = orders.ToList();
                 }
             }
             catch (FileNotFoundException e)
@@ -79,8 +83,9 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess
 
         public void WriteJson<T>(string filePath, List<T> data)
         {
-            var lines = data.Select(item => JsonSerializer.Serialize(item));
-            File.WriteAllLines(filePath, lines);
+            //var lines = data.Select(item => JsonSerializer.Serialize(item, new JsonSerializerOptions { WriteIndented = true }));
+            var line = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, line);
         }
 
         public void AddReceipt(Receipt receipt, string filePath)
