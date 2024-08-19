@@ -9,6 +9,9 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
     public class TableServiceTests
     {
         private ITableService _tableService;
+        private FakeDataAccess _fakeDataAccess;
+        private List<Table> _tables;
+        private const string TestFilePath = "test_tables.csv";
 
         [TestInitialize()]
         public void Setup()
@@ -18,8 +21,9 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
                 new Table(1, 2, false),
                 new Table(2, 4, true),
             };
-
-            _tableService = new TableService(new FakeDataAccess(testTables), new UserInterface(), "fakePath");
+            _tables = testTables;
+            _fakeDataAccess = new FakeDataAccess(testTables);
+            _tableService = new TableService(_fakeDataAccess, new UserInterface(), TestFilePath);
         }
 
         [TestMethod()]
@@ -268,9 +272,52 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
             _tableService.OccupyTable(tableNumber);
         }
 
+        [TestMethod]
+        public void UpdateTablesInFile_CallsWriteCsvWithCorrectParameters()
+        {
+            // Act
+            _tableService.UpdateTablesInFile();
+
+            // Assert
+            Assert.IsTrue(_fakeDataAccess.WasWriteCsvCalled);
+            Assert.AreEqual(TestFilePath, _fakeDataAccess.LastFilePath);
+            CollectionAssert.AreEqual(_tables, _fakeDataAccess.LastWrittenData as List<Table>);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void UpdateTablesInFile_DataAccessThrowsException_PropagatesException()
+        {
+            // Arrange
+            _fakeDataAccess.ShouldThrowException = true;
+
+            // Act
+            _tableService.UpdateTablesInFile();
+        }
+
+        [TestMethod]
+        public void UpdateTablesInFile_NoTables_StillCallsWriteCsv()
+        {
+            // Arrange
+            _fakeDataAccess = new FakeDataAccess(new List<Table>());
+            _tableService = new TableService(_fakeDataAccess, new UserInterface(), TestFilePath);
+
+            // Act
+            _tableService.UpdateTablesInFile();
+
+            // Assert
+            Assert.IsTrue(_fakeDataAccess.WasWriteCsvCalled);
+            Assert.AreEqual(TestFilePath, _fakeDataAccess.LastFilePath);
+            CollectionAssert.AreEqual(new List<Table>(), _fakeDataAccess.LastWrittenData as List<Table>);
+        }
+
         private class FakeDataAccess : IDataAccess
         {
             private readonly List<Table> _testTables;
+            public bool WasWriteCsvCalled { get; private set; }
+            public string LastFilePath { get; private set; }
+            public object LastWrittenData { get; private set; }
+            public bool ShouldThrowException { get; set; }
 
             public FakeDataAccess(List<Table> testTables)
             {
@@ -295,7 +342,14 @@ namespace AdvancedEgzaminas_Restoranas.Services.Tests
 
             public void WriteCsv<T>(string filePath, List<T> data)
             {
-                throw new NotImplementedException();
+                if (ShouldThrowException)
+                {
+                    throw new Exception("Simulated data access error");
+                }
+
+                WasWriteCsvCalled = true;
+                LastFilePath = filePath;
+                LastWrittenData = data;
             }
 
             public void WriteJson<T>(string filePath, List<T> data)
