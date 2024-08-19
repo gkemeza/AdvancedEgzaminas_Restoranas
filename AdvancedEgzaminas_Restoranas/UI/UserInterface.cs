@@ -240,15 +240,7 @@ namespace AdvancedEgzaminas_Restoranas.UI
             Console.WriteLine();
         }
 
-        public void SendEmail()
-        {
-            if (IsEmailSendNeeded())
-            {
-                Console.WriteLine("Email was sent.");
-            }
-        }
-
-        private bool IsEmailSendNeeded()
+        public bool IsEmailSendNeeded()
         {
 
             string choice;

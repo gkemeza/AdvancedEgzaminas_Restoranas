@@ -5,15 +5,15 @@ using AdvancedEgzaminas_Restoranas.DataAccess;
 
 namespace AdvancedEgzaminas_Restoranas
 {
-    // TODO: use Singleton pattern
-
     public class Program
     {
         static void Main(string[] args)
         {
             IDataAccess dataAccess = new DataAccess.DataAccess();
             UserInterface userInterface = new UserInterface();
-            IReceiptService receiptService = new ReceiptService(dataAccess, userInterface, @"..\..\..\Data\receipts.json");
+            IEmailService emailService = new EmailService(userInterface);
+            IReceiptService receiptService = new ReceiptService(
+                dataAccess, userInterface, @"..\..\..\Data\receipts.json");
             IProductService productService = new ProductService(
                 dataAccess, @"..\..\..\Data\drinks.csv", @"..\..\..\Data\food.csv");
             ITableService tableService = new TableService(
@@ -21,7 +21,8 @@ namespace AdvancedEgzaminas_Restoranas
             IOrderService orderService = new OrderService(
                 dataAccess, tableService, productService, userInterface, @"..\..\..\Data\orders.json");
             IRestaurantService restaurant = new RestaurantService(
-                dataAccess, userInterface, tableService, productService, orderService, receiptService);
+                dataAccess, userInterface, tableService, productService,
+                orderService, receiptService, emailService);
 
             restaurant.Run();
         }

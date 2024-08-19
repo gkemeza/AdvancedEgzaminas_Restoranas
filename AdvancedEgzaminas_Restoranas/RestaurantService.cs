@@ -12,10 +12,12 @@ namespace AdvancedEgzaminas_Restoranas
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IReceiptService _receiptService;
+        private readonly IEmailService _emailService;
 
         public RestaurantService(IDataAccess dataAccess, UserInterface userInterface,
             ITableService tableService, IProductService productService,
-            IOrderService orderService, IReceiptService receiptService)
+            IOrderService orderService, IReceiptService receiptService,
+            IEmailService emailService)
         {
             _dataAccess = dataAccess;
             _userInterface = userInterface;
@@ -23,6 +25,7 @@ namespace AdvancedEgzaminas_Restoranas
             _productService = productService;
             _orderService = orderService;
             _receiptService = receiptService;
+            _emailService = emailService;
         }
 
         public void Run()
@@ -96,7 +99,7 @@ namespace AdvancedEgzaminas_Restoranas
                 {
                     _receiptService.HandleClientReceipt(order);
                 }
-                _userInterface.SendEmail();
+                _emailService.SendEmail();
 
                 _orderService.EndOrder(tableNumber);
 
