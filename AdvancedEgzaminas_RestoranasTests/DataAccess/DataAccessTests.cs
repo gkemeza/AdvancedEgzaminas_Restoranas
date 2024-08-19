@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using AdvancedEgzaminas_Restoranas.Models;
+using CsvHelper;
 using CsvHelper.TypeConversion;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess.Tests
     [TestClass()]
     public class DataAccessTests
     {
-        private DataAccess _dataAccess;
+        private IDataAccess _dataAccess;
 
         [TestInitialize]
         public void Setup()
@@ -348,6 +349,78 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess.Tests
             var content = File.ReadAllLines(filePath);
             var expectedContent = newData.Select(item => JsonSerializer.Serialize(item)).ToArray();
             CollectionAssert.AreEqual(expectedContent, content);
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [TestMethod]
+        public void AddReceipt_FileExists_AddsReceiptAndUpdatesFile()
+        {
+            // Arrange
+            string filePath = "receipts.json";
+            var order = new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now);
+            var order2 = new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now);
+            var existingReceipts = new List<Receipt>
+            {
+                new Receipt(order, ReceiptType.Restaurant),
+                new Receipt(order2, ReceiptType.Client),
+            };
+            _dataAccess.WriteJson(filePath, existingReceipts);
+
+            var order3 = new Order(new Table(2, 2), new List<Product>(), 50m, DateTime.Now);
+            var newReceipt = new Receipt(order3, ReceiptType.Restaurant);
+
+            // Act
+            _dataAccess.AddReceipt(newReceipt, filePath);
+
+            // Assert
+            var updatedReceipts = _dataAccess.ReadJson<Receipt>(filePath);
+            Assert.AreEqual(3, updatedReceipts.Count);
+            Assert.AreEqual(newReceipt.Id, updatedReceipts[2].Id); // The new receipt should be last
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [TestMethod]
+        public void AddReceipt_FileDoesNotExist_CreatesFileWithNewReceipt()
+        {
+            // Arrange
+            string filePath = "non_existent_receipts.json";
+            var order = new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now);
+            var newReceipt = new Receipt(order, ReceiptType.Restaurant);
+
+            // Act
+            _dataAccess.AddReceipt(newReceipt, filePath);
+
+            // Assert
+            Assert.IsTrue(File.Exists(filePath));
+            var updatedReceipts = _dataAccess.ReadJson<Receipt>(filePath);
+            Assert.AreEqual(1, updatedReceipts.Count);
+            Assert.AreEqual(newReceipt.Id, updatedReceipts[0].Id);
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [TestMethod]
+        public void AddReceipt_FileIsEmpty_AddsReceiptAndUpdatesFile()
+        {
+            // Arrange
+            string filePath = "empty_receipts.json";
+            File.WriteAllText(filePath, "");
+
+            var order = new Order(new Table(1, 4), new List<Product>(), 100m, DateTime.Now);
+            var newReceipt = new Receipt(order, ReceiptType.Restaurant);
+
+            // Act
+            _dataAccess.AddReceipt(newReceipt, filePath);
+
+            // Assert
+            var updatedReceipts = _dataAccess.ReadJson<Receipt>(filePath);
+            Assert.AreEqual(1, updatedReceipts.Count);
+            Assert.AreEqual(newReceipt.Id, updatedReceipts[0].Id);
 
             // Cleanup
             File.Delete(filePath);
