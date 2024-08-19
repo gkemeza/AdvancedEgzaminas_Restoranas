@@ -20,19 +20,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _tables = _dataAccess.ReadCsv<Table>(_filePath);
         }
 
-        private List<Table> LoadTables()
-        {
-            try
-            {
-                return _dataAccess.ReadCsv<Table>(_filePath);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error! Failed to load tables from CSV -> {ex}");
-                return new List<Table>();
-            }
-        }
-
         public void PrintTables()
         {
             Console.WriteLine("***** Tables *****\n");

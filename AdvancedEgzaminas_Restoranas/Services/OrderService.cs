@@ -13,7 +13,8 @@ namespace AdvancedEgzaminas_Restoranas.Services
         private readonly UserInterface _userInterface;
         private readonly string _ordersFilePath;
 
-        public OrderService(IDataAccess dataAccess, ITableService tableService, IProductService productService, UserInterface userInterface, string filePath)
+        public OrderService(IDataAccess dataAccess, ITableService tableService,
+            IProductService productService, UserInterface userInterface, string filePath)
         {
             _dataAccess = dataAccess;
             _tableService = tableService;

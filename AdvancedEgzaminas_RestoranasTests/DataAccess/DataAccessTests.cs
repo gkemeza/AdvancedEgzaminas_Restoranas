@@ -117,7 +117,7 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess.Tests
         {
             // Arrange
             string filePath = "empty_file.json";
-            File.WriteAllText(filePath, "");  // Create an empty file
+            File.WriteAllText(filePath, "");
 
             // Act
             var result = _dataAccess.ReadJson<TestClass>(filePath);
