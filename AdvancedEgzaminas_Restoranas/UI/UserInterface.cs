@@ -7,7 +7,7 @@ namespace AdvancedEgzaminas_Restoranas.UI
         public void DisplayMainMenu()
         {
             Console.Clear();
-            Console.WriteLine("***** Winestone *****");
+            Console.WriteLine("***** Restaurant *****");
             Console.WriteLine("1. Begin table");
             Console.WriteLine("2. Open tables");
             Console.WriteLine("3. Receipts");
@@ -178,7 +178,7 @@ namespace AdvancedEgzaminas_Restoranas.UI
         public void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType)
         {
             Console.Clear();
-            Random rand = new Random();
+
             var filteredReceipts = receipts.Where(r => r.Type == receiptType).ToList();
 
             if (filteredReceipts.Count == 0)
@@ -189,19 +189,55 @@ namespace AdvancedEgzaminas_Restoranas.UI
             Console.WriteLine($"***** {receiptType} Receipts *****\n");
             foreach (Receipt receipt in filteredReceipts)
             {
-                Console.WriteLine($"{receiptType} receipt:");
-                Console.WriteLine($"{rand.Next(200)} - Vardenis Pavardenis\n");
-
-                Console.WriteLine("Check | Tbl | Opened | Amt Due");
-                Console.WriteLine(new string('-', 36));
-
-                Console.WriteLine($"{rand.Next(100, 1000)} | {receipt.Order.Table.Number} | " +
-                    $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount} Eur\n");
-
-                Console.WriteLine($"Receipt Num. {receipt.Id}");
-                Console.WriteLine(new string('-', 50));
-                Console.WriteLine();
+                if (receipt.Type == ReceiptType.Restaurant)
+                {
+                    PrintRestaurantReceipt(receipt);
+                }
+                else if (receipt.Type == ReceiptType.Client)
+                {
+                    PrintClientReceipt(receipt);
+                }
             }
+        }
+
+        private void PrintRestaurantReceipt(Receipt receipt)
+        {
+            Console.WriteLine("UAB \"Restoranas\"");
+            Console.WriteLine("PVM mok. kodas LT358932711, kasa 1");
+            Console.WriteLine("Restorano g. 16, Vilnius\n");
+
+            Console.WriteLine("Check  | Tbl | Opened\t      | Amt Due");
+            Console.WriteLine(new string('-', 36));
+
+            Console.WriteLine($"{receipt.Id.ToString().Substring(0, 6)} | {receipt.Order.Table.Number} | " +
+                $"{receipt.Order.OrderTime:g} | {receipt.Order.TotalAmount:F2} Eur\n");
+
+            Console.WriteLine($"Receipt Full Id. {receipt.Id}");
+            Console.WriteLine(new string('-', 50));
+            Console.WriteLine();
+        }
+
+        private void PrintClientReceipt(Receipt receipt)
+        {
+            Console.WriteLine("UAB \"Restoranas\"");
+            Console.WriteLine("PVM mok. kodas LT358932711, kasa 1");
+            Console.WriteLine("Restorano g. 16, Vilnius\n");
+
+            foreach (Product product in receipt.Order.Products)
+            {
+                Console.WriteLine($"{product.Name}\t\t {product.Price:F2}");
+            }
+
+            Console.WriteLine($"\nMoketi\t\t\t {receipt.Order.TotalAmount:F2}");
+            Console.WriteLine($"Sumoketa kreditu\t {receipt.Order.TotalAmount:F2}");
+
+            Console.WriteLine("\nMokestis | PVM | Be PVM | Su Pvm");
+            Console.WriteLine($"  21,00% | {receipt.Order.TotalAmount * 0.21m} | " +
+                $"{receipt.Order.TotalAmount * 0.79m} | {receipt.Order.TotalAmount:F2}\n");
+
+            Console.WriteLine($"Cekio Id. {receipt.Id.ToString().Substring(0, 6)}");
+            Console.WriteLine(new string('-', 50));
+            Console.WriteLine();
         }
 
         public void SendEmail()
