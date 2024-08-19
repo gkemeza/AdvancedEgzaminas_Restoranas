@@ -78,7 +78,7 @@ namespace AdvancedEgzaminas_Restoranas
             Console.Clear();
             var orders = _orderService.GetOrders();
 
-            _orderService.PrintOrders(orders);
+            _userInterface.PrintOrders(orders);
 
             FinishOrder();
 
@@ -96,7 +96,7 @@ namespace AdvancedEgzaminas_Restoranas
                 {
                     _receiptService.HandleClientReceipt(order);
                 }
-                _receiptService.SendEmail();
+                _userInterface.SendEmail();
 
                 _orderService.EndOrder(tableNumber);
 

@@ -38,15 +38,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
             Console.WriteLine("***** Tables *****\n");
             foreach (var table in _tables)
             {
-                Console.Write($"{table.Number}. {table.Seats} seats - ");
-                if (table.IsOccupied)
-                {
-                    Console.WriteLine($"(taken)");
-                }
-                else
-                {
-                    Console.WriteLine($"(free)");
-                }
+                _userInterface.PrintTableStatus(table);
             }
         }
 

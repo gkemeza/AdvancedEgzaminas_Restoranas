@@ -1,1 +1,1 @@
-{"ID":"97a90028-8261-4984-99e8-0abd8cc1293d","Table":{"Number":1,"Seats":2,"IsOccupied":true},"Products":[],"TotalAmount":0,"OrderTime":"2024-08-18T23:57:18.522955+03:00"}
+{"ID":"9ab14c27-5fc8-4b86-9829-055970bee29c","Table":{"Number":5,"Seats":4,"IsOccupied":true},"Products":[{"Name":"Kepta duona","Price":6,"Type":"Food"}],"TotalAmount":6,"OrderTime":"2024-08-19T04:06:48.766738+03:00"}

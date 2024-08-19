@@ -38,6 +38,19 @@ namespace AdvancedEgzaminas_Restoranas.UI
             return result;
         }
 
+        public void PrintTableStatus(Table table)
+        {
+            Console.Write($"{table.Number}. {table.Seats} seats - ");
+            if (table.IsOccupied)
+            {
+                Console.WriteLine($"(taken)");
+            }
+            else
+            {
+                Console.WriteLine($"(free)");
+            }
+        }
+
         public void DisplayMessageAndWait(string message)
         {
             if (message != string.Empty)
@@ -91,6 +104,29 @@ namespace AdvancedEgzaminas_Restoranas.UI
             return Console.ReadLine();
         }
 
+        public void PrintOrders(List<Order> orders)
+        {
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("No open tables found.");
+                return;
+            }
+            Console.WriteLine("***** Open Tables *****\n");
+            foreach (Order order in orders)
+            {
+                Console.WriteLine($"Table Number: {order.Table.Number}");
+                Console.WriteLine($"Seats: {order.Table.Seats}");
+                Console.WriteLine($"Order Time: {order.OrderTime}");
+                Console.WriteLine("Products:");
+                foreach (var product in order.Products)
+                {
+                    Console.WriteLine($"- {product.Name} ({product.Type}): {product.Price} Eur");
+                }
+                Console.WriteLine($"Total Amount: {order.TotalAmount} Eur");
+                Console.WriteLine(new string('-', 40));
+            }
+        }
+
         public bool IsClientReceiptNeeded()
         {
             string choice;
@@ -104,6 +140,41 @@ namespace AdvancedEgzaminas_Restoranas.UI
                     !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
 
             return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public ReceiptType PromptForReceiptType()
+        {
+            var receiptTypes = Enum.GetValues(typeof(ReceiptType)).Cast<ReceiptType>().ToList();
+
+            while (true)
+            {
+                Console.Clear();
+                PrintReceiptTypes(receiptTypes);
+
+                Console.WriteLine("\nEnter your choice: ");
+                if (!int.TryParse(Console.ReadLine(), out int number))
+                {
+                    DisplayMessageAndWait("Enter a whole number!");
+                    continue;
+                }
+
+                if (number < 1 || number > 2)
+                {
+                    DisplayMessageAndWait($"Receipt type {number} doesn't exist!");
+                    continue;
+                }
+
+                return receiptTypes[number - 1];
+            }
+        }
+
+        private void PrintReceiptTypes(List<ReceiptType> receiptTypes)
+        {
+            Console.WriteLine("Receipt types:");
+            for (int i = 0; i < receiptTypes.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {receiptTypes[i]}");
+            }
         }
 
         public void PrintReceipts(List<Receipt> receipts, ReceiptType receiptType)
@@ -133,6 +204,30 @@ namespace AdvancedEgzaminas_Restoranas.UI
                 Console.WriteLine(new string('-', 50));
                 Console.WriteLine();
             }
+        }
+
+        public void SendEmail()
+        {
+            if (IsEmailSendNeeded())
+            {
+                Console.WriteLine("Email was sent.");
+            }
+        }
+
+        private bool IsEmailSendNeeded()
+        {
+
+            string choice;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Send receipt(s) to email? (Y/N)");
+                choice = Console.ReadLine();
+            }
+            while (!choice.Equals("y", StringComparison.OrdinalIgnoreCase) &&
+                   !choice.Equals("n", StringComparison.OrdinalIgnoreCase));
+
+            return choice.Equals("y", StringComparison.OrdinalIgnoreCase);
         }
 
     }

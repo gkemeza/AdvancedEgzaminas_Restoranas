@@ -8,6 +8,5 @@ namespace AdvancedEgzaminas_Restoranas.Services.Interfaces
         Receipt HandleClientReceipt(Order order);
         List<Receipt> GetAllReceipts();
         void ShowReceipts();
-        void SendEmail();
     }
 }
