@@ -1,4 +1,5 @@
-﻿using AdvancedEgzaminas_Restoranas.Models;
+﻿using AdvancedEgzaminas_Restoranas.Enums;
+using AdvancedEgzaminas_Restoranas.Models;
 using CsvHelper;
 using CsvHelper.TypeConversion;
 using System.Text.Json;
@@ -129,6 +130,7 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess.Tests
             File.Delete(filePath);
         }
 
+        // TODO: fix ReadJson() tests
         [TestMethod]
         public void ReadJson_FileExistsAndContainsValidJson_ReturnsCorrectData()
         {
@@ -306,6 +308,7 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess.Tests
             File.Delete(filePath);
         }
 
+        // TODO: fix WriteJson() tests
         [TestMethod]
         public void WriteJson_EmptyListCreatesEmptyFile()
         {
