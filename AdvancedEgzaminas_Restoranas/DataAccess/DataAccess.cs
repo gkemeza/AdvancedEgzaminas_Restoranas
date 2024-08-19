@@ -53,8 +53,15 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess
                     {
                         if (!string.IsNullOrWhiteSpace(line))
                         {
-                            var order = JsonSerializer.Deserialize<T>(line, GetJsonSerializerOptions());
-                            items.Add(order);
+                            try
+                            {
+                                var order = JsonSerializer.Deserialize<T>(line, GetJsonSerializerOptions());
+                                items.Add(order);
+                            }
+                            catch (JsonException e)
+                            {
+                                Console.WriteLine($"Deserialization error for line '{line}': {e.Message}");
+                            }
                         }
                     }
                 }
@@ -62,10 +69,6 @@ namespace AdvancedEgzaminas_Restoranas.DataAccess
             catch (FileNotFoundException e)
             {
                 Console.WriteLine($"File not found: {e}");
-            }
-            catch (JsonException e)
-            {
-                Console.WriteLine($"Deserialization error: {e.Message}");
             }
             catch (Exception e)
             {
