@@ -77,7 +77,7 @@ namespace AdvancedEgzaminas_Restoranas.UI
             int i = 1;
             foreach (var item in products)
             {
-                Console.WriteLine($"{i++} | {item.Name} | ${item.Price:F2}");
+                Console.WriteLine($"{i++} | {item.Name} | {item.Price:F2}");
             }
         }
 

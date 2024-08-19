@@ -40,10 +40,10 @@ namespace AdvancedEgzaminas_Restoranas.Services
             var drinks = new List<Product>()
             {
                 new Drink ("Espresso", 2),
-                new Drink ("Coffee", 2.5m),
+                new Drink ("Juoda kava", 2.5m),
                 new Drink ("Cappuccino", 2.5m),
-                new Drink ("Tea", 3.5m),
-                new Drink ("Fresh juice", 5),
+                new Drink ("Arbata", 3.5m),
+                new Drink ("Sultys", 3),
                 new Drink ("Beer 0.33", 5.50m),
                 new Drink ("Beer 0.5", 7),
                 new Drink ("Mojito", 9),
@@ -63,8 +63,7 @@ namespace AdvancedEgzaminas_Restoranas.Services
                 new Food("Balandeliai", 12),
                 new Food("Jautienos mesainis", 14),
                 new Food("Medaus pyragas", 6),
-                new Food("Ledai (1 kauselis)", 3)
-
+                new Food("Ledai", 3)
             };
 
             _dataAccess.WriteCsv(_foodFilePath, food);

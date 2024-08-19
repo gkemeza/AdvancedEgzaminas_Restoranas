@@ -109,21 +109,25 @@ namespace AdvancedEgzaminas_Restoranas.Services
 
         public void SeedTables()
         {
-            var tables = new List<Table>()
+            if (!File.Exists(_filePath))
             {
-                new Table (1, 2),
-                new Table (2, 2),
-                new Table (3, 2),
-                new Table (4, 4),
-                new Table (5, 4),
-                new Table (6, 2),
-                new Table (7, 12),
-                new Table (8, 2),
-                new Table (9, 2),
-                new Table (10, 2),
-            };
+                var tables = new List<Table>()
+                {
+                    new Table (1, 2),
+                    new Table (2, 2),
+                    new Table (3, 2),
+                    new Table (4, 4),
+                    new Table (5, 4),
+                    new Table (6, 2),
+                    new Table (7, 12),
+                    new Table (8, 2),
+                    new Table (9, 2),
+                    new Table (10, 2),
+                };
 
-            _dataAccess.WriteCsv(_filePath, tables);
+                _dataAccess.WriteCsv(_filePath, tables);
+                _tables = _dataAccess.ReadCsv<Table>(_filePath);
+            }
         }
     }
 }
