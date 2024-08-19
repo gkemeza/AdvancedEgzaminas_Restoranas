@@ -1,11 +1,7 @@
-﻿namespace AdvancedEgzaminas_Restoranas.Models
-{
-    public enum ReceiptType
-    {
-        Restaurant,
-        Client
-    }
+﻿using AdvancedEgzaminas_Restoranas.Enums;
 
+namespace AdvancedEgzaminas_Restoranas.Models
+{
     public class Receipt
     {
         public Order Order { get; set; }
