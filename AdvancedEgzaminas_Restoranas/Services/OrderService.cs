@@ -47,7 +47,8 @@ namespace AdvancedEgzaminas_Restoranas.Services
                     case "1":
                         var allProducts = _productService.GetProducts();
                         _userInterface.DisplayProductsMenu(allProducts);
-                        var product = _userInterface.ChooseProduct(allProducts);
+                        string chosenName = _userInterface.PromptForProductName();
+                        var product = _userInterface.ChooseProduct(allProducts, chosenName);
 
                         if (product != null)
                         {

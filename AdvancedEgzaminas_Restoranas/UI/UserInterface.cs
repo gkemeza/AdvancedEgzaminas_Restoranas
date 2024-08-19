@@ -81,10 +81,8 @@ namespace AdvancedEgzaminas_Restoranas.UI
             }
         }
 
-        public Product ChooseProduct(List<Product> products)
+        public Product ChooseProduct(List<Product> products, string chosenName)
         {
-            string chosenName = PromptForProductName();
-
             Product? product = null;
             if (products.Any(p => string.Equals(p.Name, chosenName, StringComparison.OrdinalIgnoreCase)))
             {
@@ -98,7 +96,7 @@ namespace AdvancedEgzaminas_Restoranas.UI
             return product;
         }
 
-        private string PromptForProductName()
+        public string PromptForProductName()
         {
             Console.WriteLine("Enter product name:");
             return Console.ReadLine();
