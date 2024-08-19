@@ -20,15 +20,6 @@ namespace AdvancedEgzaminas_Restoranas.Services
             _tables = _dataAccess.ReadCsv<Table>(_filePath);
         }
 
-        public void PrintTables()
-        {
-            Console.WriteLine("***** Tables *****\n");
-            foreach (var table in _tables)
-            {
-                _userInterface.PrintTableStatus(table);
-            }
-        }
-
         public int ChooseTable()
         {
             const int MinTableNumber = 1;
@@ -106,6 +97,15 @@ namespace AdvancedEgzaminas_Restoranas.Services
         }
 
         public void UpdateTablesInFile() => _dataAccess.WriteCsv<Table>(_filePath, _tables);
+
+        public void PrintTables()
+        {
+            Console.WriteLine("***** Tables *****\n");
+            foreach (var table in _tables)
+            {
+                _userInterface.PrintTableStatus(table);
+            }
+        }
 
         public void SeedTables()
         {
