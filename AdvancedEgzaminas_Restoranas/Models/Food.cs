@@ -4,12 +4,13 @@
     {
         public override string Type => "Food";
 
+        public Food() { }
+
         public Food(string name, decimal price)
         {
             Name = name;
             Price = price;
         }
 
-        public Food() { }
     }
 }
